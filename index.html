@@ -60,7 +60,7 @@ function checkout(){
   $('modalTitle').textContent='Checkout';
   $('content').innerHTML=`<p class="notice">Cash on Delivery only for now. Online payment is not live. Delivery is free on orders of ₹799 or more; below ₹799, delivery is ₹50.</p><form id="checkoutForm" novalidate>
   <div class="field"><label>Full name</label><input name="name" required maxlength="100" autocomplete="name"></div>
-  <div class="field"><label>Mobile number</label><input name="phone" type="tel" inputmode="numeric" pattern="[0-9]{10}" maxlength="10" required placeholder="10 digit mobile" autocomplete="tel"></div>
+  <div class="field"><label>Mobile number</label><input name="phone" type="tel" inputmode="numeric" pattern="[6-9][0-9]{9}" minlength="10" maxlength="10" required placeholder="10 digit Indian mobile number" autocomplete="tel" title="Enter a 10-digit Indian mobile number starting with 6, 7, 8, or 9"></div>
   <div class="field"><label>Full delivery address</label><textarea name="address" required maxlength="500" rows="3" autocomplete="street-address"></textarea></div>
   <div class="field"><label>City / local delivery area</label><input name="city" required maxlength="100" autocomplete="address-level2"></div>
   <div class="field"><label>PIN code</label><input name="pin" inputmode="numeric" pattern="[0-9]{6}" maxlength="6" required placeholder="6 digit PIN code" autocomplete="postal-code"></div>
