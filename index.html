@@ -1,85 +1,501 @@
+
 <!doctype html>
 <html lang="hi">
 <head>
-<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Mewa Veda | Dry Fruits & Khade Masale</title>
 <style>
 :root{--green:#164b38;--green2:#0c3528;--gold:#c98a34;--paper:#fffdf8;--bg:#f8f3e9;--ink:#2c2419;--muted:#756956;--line:#e7dcc9}
-*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font:15px Arial,sans-serif}button,input,select,textarea{font:inherit}button{cursor:pointer}.top{background:var(--green2);color:white;padding:10px 5%;font-size:13px;display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap}.nav{display:flex;justify-content:space-between;align-items:center;padding:18px 5%;background:var(--paper);border-bottom:1px solid var(--line);gap:16px}.brand{font:bold 27px Georgia,serif;color:var(--green)}.tag{font-size:10px;letter-spacing:2px;color:var(--muted);margin-top:3px}.btn{border:0;border-radius:6px;background:var(--green);color:#fff;padding:12px 16px;font-weight:bold}.btn.alt{background:transparent;border:1px solid var(--green);color:var(--green)}.hero{padding:48px 5%;display:grid;grid-template-columns:1.1fr .9fr;gap:30px;align-items:center;background:linear-gradient(120deg,#123b2c,#286044);color:#fff8e9}.eyebrow{color:#efc77d;text-transform:uppercase;font-size:11px;letter-spacing:2px;font-weight:bold}.hero h1{font:clamp(38px,5vw,62px)/1.05 Georgia,serif;margin:16px 0}.hero p{line-height:1.7;color:#e0e8dc;max-width:550px}.hero-art{min-height:250px;border:1px solid #d5b16d66;border-radius:150px 150px 12px 12px;display:grid;place-items:center;background:radial-gradient(circle,#8a653d,#33251a);font-size:130px}.section{padding:38px 5%}.heading{margin-bottom:20px}.heading h2{font:32px Georgia,serif;margin:8px 0}.heading p{color:var(--muted);font-size:13px}.grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px}.card{border:1px solid var(--line);background:var(--paper);border-radius:10px;overflow:hidden}.art{height:130px;display:grid;place-items:center;font-size:58px;background:linear-gradient(135deg,#f4e8d2,#dec39a)}.body{padding:14px}.body h3{font:19px Georgia,serif;margin:0 0 7px}.muted{color:var(--muted);font-size:12px}.price{font-weight:bold;margin:12px 0}.card .btn{padding:9px 11px;font-size:12px}.spices{background:#f0e6d5;border-block:1px solid var(--line)}.cartbar{display:flex;gap:12px;align-items:center}.footer{background:var(--green2);color:#fff1d5;padding:28px 5%;line-height:1.7}.modalback{display:none;position:fixed;inset:0;background:#0009;z-index:10;align-items:center;justify-content:center;padding:15px}.modalback.open{display:flex}.modal{background:var(--paper);border-radius:12px;padding:22px;width:min(560px,100%);max-height:90vh;overflow:auto}.modalhead{display:flex;justify-content:space-between;align-items:center;gap:10px}.modalhead h2{font:26px Georgia,serif;margin:0}.close{font-size:26px;border:0;background:none}.cartline{display:flex;justify-content:space-between;align-items:center;gap:8px;border-bottom:1px solid var(--line);padding:12px 0}.qty button{padding:3px 9px;margin:0 4px}.field{display:grid;gap:6px;margin:12px 0}.field label{font-size:12px;color:var(--muted)}.field input,.field textarea,.field select{padding:11px;border:1px solid var(--line);border-radius:5px;background:white;color:#222;width:100%}.notice{font-size:12px;color:var(--muted);line-height:1.5}.total{font-weight:bold;font-size:18px;margin:15px 0}.summaryline{display:flex;justify-content:space-between;gap:16px;margin:7px 0}.grandtotal{border-top:1px solid var(--line);padding-top:10px;font-size:19px;font-weight:bold}@media(max-width:760px){.hero{grid-template-columns:1fr;padding-top:32px}.hero-art{min-height:190px;font-size:95px}.grid{grid-template-columns:repeat(2,minmax(0,1fr))}.nav{padding:14px 4%}.section{padding:30px 4%}}@media(max-width:420px){.grid{gap:8px}.body{padding:10px}.body h3{font-size:16px}.art{height:105px;font-size:45px}.btn{padding:10px 12px}}
-</style></head>
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:15px Arial,sans-serif}
+button,input,select,textarea{font:inherit}
+button{cursor:pointer}
+button:disabled{opacity:.55;cursor:not-allowed}
+.top{background:var(--green2);color:white;padding:10px 5%;font-size:13px;display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap}
+.nav{display:flex;justify-content:space-between;align-items:center;padding:18px 5%;background:var(--paper);border-bottom:1px solid var(--line);gap:16px}
+.brand{font:bold 27px Georgia,serif;color:var(--green)}
+.tag{font-size:10px;letter-spacing:2px;color:var(--muted);margin-top:3px}
+.btn{border:0;border-radius:6px;background:var(--green);color:#fff;padding:12px 16px;font-weight:bold}
+.btn.alt{background:transparent;border:1px solid var(--green);color:var(--green)}
+.hero{padding:48px 5%;display:grid;grid-template-columns:1.1fr .9fr;gap:30px;align-items:center;background:linear-gradient(120deg,#123b2c,#286044);color:#fff8e9}
+.eyebrow{color:#efc77d;text-transform:uppercase;font-size:11px;letter-spacing:2px;font-weight:bold}
+.hero h1{font:clamp(38px,5vw,62px)/1.05 Georgia,serif;margin:16px 0}
+.hero p{line-height:1.7;color:#e0e8dc;max-width:550px}
+.hero-art{min-height:250px;border:1px solid #d5b16d66;border-radius:150px 150px 12px 12px;display:grid;place-items:center;background:radial-gradient(circle,#8a653d,#33251a);font-size:130px}
+.section{padding:38px 5%}
+.heading{margin-bottom:20px}
+.heading h2{font:32px Georgia,serif;margin:8px 0}
+.heading p{color:var(--muted);font-size:13px}
+.grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px}
+.card{border:1px solid var(--line);background:var(--paper);border-radius:10px;overflow:hidden}
+.art{height:130px;display:grid;place-items:center;font-size:58px;background:linear-gradient(135deg,#f4e8d2,#dec39a)}
+.body{padding:14px}
+.body h3{font:19px Georgia,serif;margin:0 0 7px}
+.muted{color:var(--muted);font-size:12px}
+.price{font-weight:bold;margin:12px 0}
+.card .btn{padding:9px 11px;font-size:12px}
+.spices{background:#f0e6d5;border-block:1px solid var(--line)}
+.cartbar{display:flex;gap:12px;align-items:center}
+.footer{background:var(--green2);color:#fff1d5;padding:28px 5%;line-height:1.7}
+.modalback{display:none;position:fixed;inset:0;background:#0009;z-index:10;align-items:center;justify-content:center;padding:15px}
+.modalback.open{display:flex}
+.modal{background:var(--paper);border-radius:12px;padding:22px;width:min(560px,100%);max-height:90vh;overflow:auto}
+.modalhead{display:flex;justify-content:space-between;align-items:center;gap:10px}
+.modalhead h2{font:26px Georgia,serif;margin:0}
+.close{font-size:26px;border:0;background:none}
+.cartline{display:flex;justify-content:space-between;align-items:center;gap:8px;border-bottom:1px solid var(--line);padding:12px 0}
+.qty button{padding:3px 9px;margin:0 4px}
+.field{display:grid;gap:6px;margin:12px 0}
+.field label{font-size:12px;color:var(--muted)}
+.field input,.field textarea,.field select{padding:11px;border:1px solid var(--line);border-radius:5px;background:white;color:#222;width:100%}
+.notice{font-size:12px;color:var(--muted);line-height:1.5}
+.total{font-weight:bold;font-size:18px;margin:15px 0}
+.summaryline{display:flex;justify-content:space-between;gap:16px;margin:7px 0}
+.grandtotal{border-top:1px solid var(--line);padding-top:10px;font-size:19px;font-weight:bold}
+.otpbox{background:#f5eedf;border:1px solid var(--line);border-radius:8px;padding:12px;margin:12px 0}
+.otp-actions{display:flex;gap:8px;flex-wrap:wrap}
+.otp-actions .btn{flex:1}
+#recaptcha-container{margin:10px 0}
+@media(max-width:760px){.hero{grid-template-columns:1fr;padding-top:32px}.hero-art{min-height:190px;font-size:95px}.grid{grid-template-columns:repeat(2,minmax(0,1fr))}.nav{padding:14px 4%}.section{padding:30px 4%}}
+@media(max-width:420px){.grid{gap:8px}.body{padding:10px}.body h3{font-size:16px}.art{height:105px;font-size:45px}.btn{padding:10px 12px}}
+</style>
+</head>
 <body>
-<div class="top"><span>Premium Dry Fruits · Quality You Can Trust</span><span>Retail + Wholesale · Bihar delivery enquiries</span></div>
-<header class="nav"><div><div class="brand">✦ Mewa Veda</div><div class="tag">DRY FRUITS & WHOLE SPICES</div></div><div class="cartbar"><button class="btn alt" id="bulkBtn">Wholesale</button><button class="btn" id="cartBtn">Cart (<span id="count">0</span>)</button></div></header>
-<section class="hero"><div><div class="eyebrow">A little goodness, every day</div><h1>Nature’s finest.<br><span style="color:#efc77d">Chosen for you.</span></h1><p>Badam, kaju, pista, kishmish, anjeer aur khade masale — Mewa Veda par apne favourites dekhein.</p><button class="btn" onclick="document.getElementById('shop').scrollIntoView({behavior:'smooth'})">Shop products ↓</button></div><div class="hero-art">🥜</div></section>
-<section class="section" id="shop"><div class="heading"><div class="eyebrow" style="color:var(--gold)">Explore the collection</div><h2>Dry Fruits</h2><p>Owner-provided prices for 250 g packs. Blank rates are shown as price on request.</p></div><div class="grid" id="products"></div></section>
-<section class="section spices"><div class="heading"><div class="eyebrow" style="color:var(--gold)">Kitchen essentials</div><h2>Whole Spices / Khade Masale</h2><p>Rates shown per kg.</p></div><div class="grid" id="spices"></div></section>
-<section class="section"><div class="heading"><h2>Ordering information</h2><p>Cash on Delivery order requests are sent for confirmation.</p></div><p>Free delivery on orders of ₹799 or more. Orders below ₹799 have a ₹50 delivery charge. COD order requests are sent for confirmation. Online payment is not connected yet. An order is confirmed only when the website shows a confirmation and order ID. Never enter a UPI PIN or card details into this website.</p></section>
-<footer class="footer"><strong>Mewa Veda</strong><br>Dry Fruits & Whole Spices<br>Wholesale enquiries: +91 87090 11592</footer>
-<div class="modalback" id="back"><div class="modal"><div class="modalhead"><h2 id="modalTitle">Your Cart</h2><button class="close" id="close">×</button></div><div id="content"></div></div></div>
+<div class="top">
+  <span>Premium Dry Fruits · Quality You Can Trust</span>
+  <span>Retail + Wholesale · Bihar delivery enquiries</span>
+</div>
+
+<header class="nav">
+  <div><div class="brand">✦ Mewa Veda</div><div class="tag">DRY FRUITS & WHOLE SPICES</div></div>
+  <div class="cartbar">
+    <button class="btn alt" id="bulkBtn">Wholesale</button>
+    <button class="btn" id="cartBtn">Cart (<span id="count">0</span>)</button>
+  </div>
+</header>
+
+<section class="hero">
+  <div>
+    <div class="eyebrow">A little goodness, every day</div>
+    <h1>Nature’s finest.<br><span style="color:#efc77d">Chosen for you.</span></h1>
+    <p>Badam, kaju, pista, kishmish, anjeer aur khade masale — Mewa Veda par apne favourites dekhein.</p>
+    <button class="btn" onclick="document.getElementById('shop').scrollIntoView({behavior:'smooth'})">Shop products ↓</button>
+  </div>
+  <div class="hero-art">🥜</div>
+</section>
+
+<section class="section" id="shop">
+  <div class="heading">
+    <div class="eyebrow" style="color:var(--gold)">Explore the collection</div>
+    <h2>Dry Fruits</h2>
+    <p>Prices are for 250 g packs. Blank rates are shown as price on request.</p>
+  </div>
+  <div class="grid" id="products"></div>
+</section>
+
+<section class="section spices">
+  <div class="heading">
+    <div class="eyebrow" style="color:var(--gold)">Kitchen essentials</div>
+    <h2>Whole Spices / Khade Masale</h2>
+    <p>Rates shown per kg.</p>
+  </div>
+  <div class="grid" id="spices"></div>
+</section>
+
+<section class="section">
+  <div class="heading"><h2>Ordering information</h2><p>Orders are sent for confirmation.</p></div>
+  <p>Free delivery on orders of ₹799 or more. Orders below ₹799 have a ₹50 delivery charge. Cash on Delivery only. Online payment is not connected yet. An order is confirmed only when the website shows a confirmation and order ID. Never enter a UPI PIN or card details into this website.</p>
+</section>
+
+<footer class="footer">
+  <strong>Mewa Veda</strong><br>Dry Fruits & Whole Spices<br>
+  Wholesale enquiries: +91 87090 11592
+</footer>
+
+<div class="modalback" id="back">
+  <div class="modal">
+    <div class="modalhead"><h2 id="modalTitle">Your Cart</h2><button class="close" id="close">×</button></div>
+    <div id="content"></div>
+  </div>
+</div>
+
+<!-- Firebase client SDKs -->
+<script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-auth-compat.js"></script>
+
 <script>
 (function(){
 'use strict';
-const FREE_DELIVERY_MINIMUM=799;
-const DELIVERY_CHARGE=50;
-const products=[
-{id:'badam',name:'Badam / Almonds',emoji:'🌰',price:275,unit:'250 g'},
-{id:'kaju',name:'Kaju / Cashews',emoji:'🥜',price:265,unit:'250 g'},
-{id:'pista',name:'Pista / Pistachios',emoji:'🟢',price:465,unit:'250 g'},
-{id:'kishmish',name:'Kishmish / Raisins',emoji:'🍇',price:125,unit:'250 g'},
-{id:'akhrot',name:'Akhrot / Walnuts',emoji:'🤎',price:300,unit:'250 g'},
-{id:'khajoor',name:'Khajoor / Dates',emoji:'🟤',price:null,unit:'250 g'},
-{id:'mix',name:'Mix Dry Fruits',emoji:'🎁',price:null,unit:'250 g'},
-{id:'anjeer',name:'Anjeer / Dried Figs',emoji:'🟣',price:250,unit:'250 g'}
+
+const FREE_DELIVERY_MINIMUM = 799;
+const DELIVERY_CHARGE = 50;
+
+/* IMPORTANT: Replace every placeholder with the matching value
+   from Firebase Console > Project settings > Your apps > Config. */
+const firebaseConfig = {
+  apiKey: "AIzaSyBcV38Mp1IU-i6-21zze7g8Wfj1J4Mu9Qg",
+  authDomain: "mewa-veda-1f4de.firebaseapp.com",
+  projectId: "mewa-veda-1f4de",
+  storageBucket: "mewa-veda-1f4de.firebasestorage.app",
+  messagingSenderId: "838503080273",
+  appId: "1:838503080273:web:bf4c7267b42dc2aecb3370",
+};
+
+const configReady = Object.values(firebaseConfig).every(
+  value => value && !value.startsWith("PASTE_")
+);
+
+let firebaseAuth = null;
+if(configReady){
+  firebase.initializeApp(firebaseConfig);
+  firebaseAuth = firebase.auth();
+}
+
+let otpConfirmation = null;
+let verifiedIdToken = null;
+let verifiedPhone = null;
+let recaptchaVerifier = null;
+let recaptchaWidgetRendered = false;
+
+const products = [
+  {id:'badam',name:'Badam / Almonds',emoji:'🌰',price:275,unit:'250 g'},
+  {id:'kaju',name:'Kaju / Cashews',emoji:'🥜',price:265,unit:'250 g'},
+  {id:'pista',name:'Pista / Pistachios',emoji:'🟢',price:465,unit:'250 g'},
+  {id:'kishmish',name:'Kishmish / Raisins',emoji:'🍇',price:125,unit:'250 g'},
+  {id:'akhrot',name:'Akhrot / Walnuts',emoji:'🤎',price:300,unit:'250 g'},
+  {id:'khajoor',name:'Khajoor / Dates',emoji:'🟤',price:null,unit:'250 g'},
+  {id:'mix',name:'Mix Dry Fruits',emoji:'🎁',price:null,unit:'250 g'},
+  {id:'anjeer',name:'Anjeer / Dried Figs',emoji:'🟣',price:250,unit:'250 g'}
 ];
-const spices=[
-['Cumin Seeds / Jeera','🌿',399],['Black Pepper / Kali Mirch','⚫',899],['Green Cardamom / Chhoti Elaichi','🟢',4500],['Cinnamon / Dalchini','🪵',600],['Cloves / Laung','🍂',1200],['Fennel Seeds / Saunf','🌱',250],['Black Cardamom / Badi Elaichi','🌰',2500]
+
+const spices = [
+  ['Cumin Seeds / Jeera','🌿',399],
+  ['Black Pepper / Kali Mirch','⚫',899],
+  ['Green Cardamom / Chhoti Elaichi','🟢',4500],
+  ['Cinnamon / Dalchini','🪵',600],
+  ['Cloves / Laung','🍂',1200],
+  ['Fennel Seeds / Saunf','🌱',250],
+  ['Black Cardamom / Badi Elaichi','🌰',2500]
 ];
-let cart=[];
-const money=n=>'₹'+Number(n).toLocaleString('en-IN');
-const $=id=>document.getElementById(id);
+
+let cart = [];
+let sendingOrder = false;
+
+const money = n => '₹' + Number(n).toLocaleString('en-IN');
+const $ = id => document.getElementById(id);
+
 function getTotals(){
-  const subtotal=cart.reduce((n,p)=>n+p.price*p.qty,0);
-  const deliveryCharge=subtotal===0||subtotal>=FREE_DELIVERY_MINIMUM?0:DELIVERY_CHARGE;
+  const subtotal = cart.reduce((n,p)=>n+p.price*p.qty,0);
+  const deliveryCharge = subtotal===0 || subtotal>=FREE_DELIVERY_MINIMUM ? 0 : DELIVERY_CHARGE;
   return {subtotal,deliveryCharge,total:subtotal+deliveryCharge};
 }
+
 function totalsHtml(t){
   return `<div class="summaryline"><span>Subtotal</span><strong>${money(t.subtotal)}</strong></div>
   <div class="summaryline"><span>Delivery charge</span><strong>${t.deliveryCharge===0?'FREE':money(t.deliveryCharge)}</strong></div>
   <div class="summaryline grandtotal"><span>Final total</span><strong>${money(t.total)}</strong></div>
   <p class="notice">${t.subtotal>=FREE_DELIVERY_MINIMUM?'Congratulations! Aapko free delivery mil rahi hai.':`Free delivery ke liye ${money(FREE_DELIVERY_MINIMUM-t.subtotal)} aur add karein. ₹${DELIVERY_CHARGE} delivery charge lagega.`}</p>`;
 }
-function renderProducts(){ $('products').innerHTML=products.map(p=>`<article class="card"><div class="art">${p.emoji}</div><div class="body"><h3>${p.name}</h3><div class="muted">${p.unit}</div><div class="price">${p.price===null?'Price on request':money(p.price)}</div><button class="btn" data-product="${p.id}">${p.price===null?'Ask price':'Add to cart'}</button></div></article>`).join('');
-document.querySelectorAll('[data-product]').forEach(b=>b.addEventListener('click',()=>{const p=products.find(x=>x.id===b.dataset.product);if(p.price===null){openInfo('Price on request',`<p>${p.name} ka current rate business se confirm karein.</p><p>WhatsApp: +91 87090 11592</p>`);return;}const existing=cart.find(x=>x.id===p.id);if(existing)existing.qty++;else cart.push({...p,qty:1});updateCount();b.textContent='Added ✓';setTimeout(()=>b.textContent='Add to cart',900)}));}
-function renderSpices(){ $('spices').innerHTML=spices.map(s=>`<article class="card"><div class="art">${s[1]}</div><div class="body"><h3>${s[0]}</h3><div class="muted">Per kg</div><div class="price">${money(s[2])} / kg</div><button class="btn" data-spice="${s[0]}" data-price="${s[2]}">Add to cart</button></div></article>`).join('');document.querySelectorAll('[data-spice]').forEach(b=>b.addEventListener('click',()=>{const name=b.dataset.spice;const price=Number(b.dataset.price);const id='spice-'+name.toLowerCase().replace(/[^a-z0-9]+/g,'-');const existing=cart.find(x=>x.id===id);if(existing)existing.qty++;else cart.push({id,name,price,unit:'1 kg',emoji:'🌿',qty:1});updateCount();b.textContent='Added ✓';setTimeout(()=>b.textContent='Add to cart',900);}));}
-function updateCount(){$('count').textContent=cart.reduce((n,p)=>n+p.qty,0);}
-function openInfo(title,html){$('modalTitle').textContent=title;$('content').innerHTML=html;$('back').classList.add('open');}
-function openCart(){ $('modalTitle').textContent='Your Cart';if(!cart.length){$('content').innerHTML='<p>Your cart is empty. Dry fruits add karke try karo.</p>';}else{const t=getTotals();$('content').innerHTML=cart.map(p=>`<div class="cartline"><div><strong>${p.name}</strong><div class="muted">${money(p.price)} / ${p.unit}</div><div class="qty"><button data-minus="${p.id}">−</button>${p.qty}<button data-plus="${p.id}">+</button></div></div><strong>${money(p.price*p.qty)} <button class="btn alt" data-remove="${p.id}">Remove</button></strong></div>`).join('')+totalsHtml(t)+`<button class="btn" id="checkout">Continue to checkout</button>`;document.querySelectorAll('[data-minus]').forEach(b=>b.onclick=()=>changeQty(b.dataset.minus,-1));document.querySelectorAll('[data-plus]').forEach(b=>b.onclick=()=>changeQty(b.dataset.plus,1));document.querySelectorAll('[data-remove]').forEach(b=>b.onclick=()=>{cart=cart.filter(p=>p.id!==b.dataset.remove);updateCount();openCart()});$('checkout').onclick=checkout;} $('back').classList.add('open');}
-function changeQty(id,d){const p=cart.find(x=>x.id===id);if(p){p.qty+=d;if(p.qty<=0)cart=cart.filter(x=>x.id!==id);}updateCount();openCart();}
+
+function openInfo(title,html){
+  $('modalTitle').textContent=title;
+  $('content').innerHTML=html;
+  $('back').classList.add('open');
+}
+
+function updateCount(){
+  $('count').textContent=cart.reduce((n,p)=>n+p.qty,0);
+}
+
+function renderProducts(){
+  $('products').innerHTML=products.map(p=>`
+    <article class="card">
+      <div class="art">${p.emoji}</div>
+      <div class="body">
+        <h3>${p.name}</h3><div class="muted">${p.unit}</div>
+        <div class="price">${p.price===null?'Price on request':money(p.price)}</div>
+        <button class="btn" data-product="${p.id}">${p.price===null?'Ask price':'Add to cart'}</button>
+      </div>
+    </article>`).join('');
+
+  document.querySelectorAll('[data-product]').forEach(b=>{
+    b.addEventListener('click',()=>{
+      const p=products.find(x=>x.id===b.dataset.product);
+      if(p.price===null){
+        openInfo('Price on request',`<p>${p.name} ka current rate business se confirm karein.</p><p>Phone: +91 87090 11592</p>`);
+        return;
+      }
+      const existing=cart.find(x=>x.id===p.id);
+      if(existing)existing.qty++;
+      else cart.push({...p,qty:1});
+      updateCount();
+      b.textContent='Added ✓';
+      setTimeout(()=>b.textContent='Add to cart',900);
+    });
+  });
+}
+
+function renderSpices(){
+  $('spices').innerHTML=spices.map(s=>`
+    <article class="card">
+      <div class="art">${s[1]}</div>
+      <div class="body">
+        <h3>${s[0]}</h3><div class="muted">Per kg</div>
+        <div class="price">${money(s[2])} / kg</div>
+        <button class="btn" data-spice="${s[0]}" data-price="${s[2]}">Add to cart</button>
+      </div>
+    </article>`).join('');
+
+  document.querySelectorAll('[data-spice]').forEach(b=>{
+    b.addEventListener('click',()=>{
+      const name=b.dataset.spice;
+      const price=Number(b.dataset.price);
+      const id='spice-'+name.toLowerCase().replace(/[^a-z0-9]+/g,'-');
+      const existing=cart.find(x=>x.id===id);
+      if(existing)existing.qty++;
+      else cart.push({id,name,price,unit:'1 kg',emoji:'🌿',qty:1});
+      updateCount();
+      b.textContent='Added ✓';
+      setTimeout(()=>b.textContent='Add to cart',900);
+    });
+  });
+}
+
+function openCart(){
+  $('modalTitle').textContent='Your Cart';
+
+  if(!cart.length){
+    $('content').innerHTML='<p>Your cart is empty. Dry fruits add karke try karo.</p>';
+  }else{
+    $('content').innerHTML=cart.map(p=>`
+      <div class="cartline">
+        <div><strong>${p.name}</strong>
+          <div class="muted">${money(p.price)} / ${p.unit}</div>
+          <div class="qty"><button data-minus="${p.id}">−</button>${p.qty}<button data-plus="${p.id}">+</button></div>
+        </div>
+        <strong>${money(p.price*p.qty)} <button class="btn alt" data-remove="${p.id}">Remove</button></strong>
+      </div>`).join('')+
+      totalsHtml(getTotals())+
+      '<button class="btn" id="checkout">Continue to checkout</button>';
+
+    document.querySelectorAll('[data-minus]').forEach(b=>b.onclick=()=>changeQty(b.dataset.minus,-1));
+    document.querySelectorAll('[data-plus]').forEach(b=>b.onclick=()=>changeQty(b.dataset.plus,1));
+    document.querySelectorAll('[data-remove]').forEach(b=>b.onclick=()=>{
+      cart=cart.filter(p=>p.id!==b.dataset.remove);
+      updateCount();
+      openCart();
+    });
+    $('checkout').onclick=checkout;
+  }
+  $('back').classList.add('open');
+}
+
+function changeQty(id,d){
+  const p=cart.find(x=>x.id===id);
+  if(p){
+    p.qty+=d;
+    if(p.qty<=0)cart=cart.filter(x=>x.id!==id);
+  }
+  updateCount();
+  openCart();
+}
+
 function checkout(){
+  if(!cart.length){
+    openCart();
+    return;
+  }
+
   const t=getTotals();
+  verifiedIdToken=null;
+  verifiedPhone=null;
+  otpConfirmation=null;
+  recaptchaVerifier=null;
+  recaptchaWidgetRendered=false;
+
   $('modalTitle').textContent='Checkout';
-  $('content').innerHTML=`<p class="notice">Cash on Delivery only for now. Online payment is not live. Delivery is free on orders of ₹799 or more; below ₹799, delivery is ₹50.</p><form id="checkoutForm" novalidate>
-  <div class="field"><label>Full name</label><input name="name" required maxlength="100" autocomplete="name"></div>
-  <div class="field"><label>Mobile number</label><input name="phone" type="tel" inputmode="numeric" pattern="[6-9][0-9]{9}" minlength="10" maxlength="10" required placeholder="10 digit Indian mobile number" autocomplete="tel" title="Enter a 10-digit Indian mobile number starting with 6, 7, 8, or 9"></div>
-  <div class="field"><label>Full delivery address</label><textarea name="address" required maxlength="500" rows="3" autocomplete="street-address"></textarea></div>
-  <div class="field"><label>City / local delivery area</label><input name="city" required maxlength="100" autocomplete="address-level2"></div>
-  <div class="field"><label>PIN code</label><input name="pin" inputmode="numeric" pattern="[0-9]{6}" maxlength="6" required placeholder="6 digit PIN code" autocomplete="postal-code"></div>
-  <div class="field"><label>Payment option</label><select name="payment" required><option value="COD">Cash on Delivery (COD)</option><option value="ONLINE_PENDING" disabled>Online payment (not live yet)</option></select></div>
-  <div id="checkoutTotals">${totalsHtml(t)}</div>
-  <button class="btn" type="button" id="placeOrderBtn">Place order request</button><p id="checkoutStatus" class="notice" role="status" aria-live="polite" style="display:none;margin-top:12px"></p></form>`;
-  const form=$('checkoutForm'), btn=$('placeOrderBtn'), status=$('checkoutStatus');
-  let sendingOrder=false;
-  const showStatus=message=>{if(status){status.style.display='block';status.textContent=message;}};
+  $('content').innerHTML=`
+    <p class="notice">Cash on Delivery only. Online payment is not live. Delivery is free on orders of ₹799 or more; below ₹799, delivery is ₹50.</p>
+    ${!configReady?'<p role="alert" style="color:#a00">Firebase configuration is incomplete. Phone verification is unavailable.</p>':''}
+    <form id="checkoutForm" novalidate>
+      <div class="field"><label>Full name</label><input name="name" required maxlength="100" autocomplete="name"></div>
+      <div class="field">
+        <label>Indian mobile number</label>
+        <input name="phone" type="tel" inputmode="numeric" pattern="[6-9][0-9]{9}" minlength="10" maxlength="10" required placeholder="10 digit mobile number" autocomplete="tel-national">
+      </div>
+
+      <div class="otpbox">
+        <strong>Phone verification (OTP)</strong>
+        <p class="notice">OTP ke liye apna sahi mobile number enter karein. SMS charges ya Firebase limits apply ho sakte hain.</p>
+        <div id="recaptcha-container"></div>
+        <div class="otp-actions">
+          <button class="btn" type="button" id="sendOtpBtn" ${configReady?'':'disabled'}>Send OTP</button>
+        </div>
+        <div class="field">
+          <label>6-digit OTP</label>
+          <input id="otpCode" type="text" inputmode="numeric" autocomplete="one-time-code" maxlength="6" pattern="[0-9]{6}" placeholder="Enter OTP received by SMS" disabled>
+        </div>
+        <div class="otp-actions">
+          <button class="btn alt" type="button" id="verifyOtpBtn" disabled>Verify OTP</button>
+        </div>
+        <p id="otpStatus" class="notice" role="status" aria-live="polite"></p>
+      </div>
+
+      <div class="field"><label>Full delivery address</label><textarea name="address" required maxlength="500" rows="3" autocomplete="street-address"></textarea></div>
+      <div class="field"><label>City / local delivery area</label><input name="city" required maxlength="100" autocomplete="address-level2"></div>
+      <div class="field"><label>PIN code</label><input name="pin" inputmode="numeric" pattern="[0-9]{6}" maxlength="6" required placeholder="6 digit PIN code" autocomplete="postal-code"></div>
+      <div class="field"><label>Payment option</label><select name="payment" required><option value="COD">Cash on Delivery (COD)</option></select></div>
+      <div id="checkoutTotals">${totalsHtml(t)}</div>
+      <button class="btn" type="button" id="placeOrderBtn" disabled>Verify phone first</button>
+      <p id="checkoutStatus" class="notice" role="status" aria-live="polite"></p>
+    </form>`;
+
+  const form=$('checkoutForm');
+  const sendBtn=$('sendOtpBtn');
+  const verifyBtn=$('verifyOtpBtn');
+  const placeBtn=$('placeOrderBtn');
+  const otpCode=$('otpCode');
+  const otpStatus=$('otpStatus');
+  const checkoutStatus=$('checkoutStatus');
+
+  const showOtpStatus=message=>{otpStatus.textContent=message;};
+  const showCheckoutStatus=message=>{checkoutStatus.textContent=message;};
+
+  function currentPhone(){
+    const phone=String(form.elements.phone.value||'').trim();
+    return /^[6-9]\d{9}$/.test(phone)?'+91'+phone:null;
+  }
+
+  function resetVerification(message){
+    verifiedIdToken=null;
+    verifiedPhone=null;
+    otpConfirmation=null;
+    placeBtn.disabled=true;
+    placeBtn.textContent='Verify phone first';
+    verifyBtn.disabled=true;
+    otpCode.disabled=true;
+    showOtpStatus(message||'Phone number changed. Please request a new OTP.');
+  }
+
+  form.elements.phone.addEventListener('input',()=>{
+    resetVerification('Phone number changed. Please request a new OTP.');
+    sendBtn.disabled=!configReady;
+  });
+
+  async function ensureRecaptcha(){
+    if(!firebaseAuth)throw new Error('Firebase config is incomplete.');
+    if(!recaptchaVerifier){
+      recaptchaVerifier=new firebase.auth.RecaptchaVerifier('recaptcha-container',{
+        size:'normal',
+        callback:()=>showOtpStatus('Captcha verified. Ab OTP bhej sakte hain.'),
+        'expired-callback':()=>showOtpStatus('Captcha expire ho gaya. Dobara verify karein.')
+      });
+    }
+    if(!recaptchaWidgetRendered){
+      await recaptchaVerifier.render();
+      recaptchaWidgetRendered=true;
+    }
+  }
+
+  sendBtn.addEventListener('click',async()=>{
+    const phone=currentPhone();
+    if(!phone){
+      showOtpStatus('Pehle valid 10-digit Indian mobile number enter karein.');
+      form.elements.phone.focus();
+      return;
+    }
+    sendBtn.disabled=true;
+    showOtpStatus('Captcha aur SMS request process ho rahi hai...');
+
+    try{
+      await ensureRecaptcha();
+      otpConfirmation=await firebaseAuth.signInWithPhoneNumber(phone,recaptchaVerifier);
+      otpCode.disabled=false;
+      verifyBtn.disabled=false;
+      showOtpStatus('OTP request bhej di gayi hai. SMS aaye to code enter karke Verify OTP dabayein.');
+    }catch(error){
+      otpConfirmation=null;
+      showOtpStatus('OTP send nahi hua: '+friendlyFirebaseError(error));
+      sendBtn.disabled=false;
+      try{
+        if(recaptchaVerifier){
+          recaptchaVerifier.clear();
+          recaptchaVerifier=null;
+          recaptchaWidgetRendered=false;
+          $('recaptcha-container').innerHTML='';
+        }
+      }catch(_){}
+    }
+  });
+
+  function friendlyFirebaseError(error){
+    const code=error&&error.code;
+    const messages={
+      'auth/invalid-phone-number':'Mobile number format invalid hai.',
+      'auth/too-many-requests':'Bahut requests hui hain. Baad mein try karein.',
+      'auth/quota-exceeded':'SMS quota limit ho sakti hai. Firebase settings check karein.',
+      'auth/captcha-check-failed':'Captcha verification fail hui. Dobara try karein.',
+      'auth/operation-not-allowed':'Firebase Console mein Phone sign-in enable karein.',
+      'auth/unauthorized-domain':'Firebase Auth ke Authorized domains mein website domain add karein.',
+      'auth/invalid-verification-code':'OTP galat hai. Code check karein.',
+      'auth/code-expired':'OTP expire ho gaya. Naya OTP mangayein.'
+    };
+    return messages[code]||'Firebase verification fail hui. Error code: '+(code||'unknown');
+  }
+
+  verifyBtn.addEventListener('click',async()=>{
+    const code=String(otpCode.value||'').trim();
+    const phone=currentPhone();
+    if(!phone){showOtpStatus('Mobile number dobara check karein.');return;}
+    if(!/^\d{6}$/.test(code)){showOtpStatus('6-digit OTP enter karein.');return;}
+    if(!otpConfirmation){showOtpStatus('Pehle OTP request karein.');return;}
+
+    verifyBtn.disabled=true;
+    showOtpStatus('OTP verify ho raha hai...');
+
+    try{
+      const result=await otpConfirmation.confirm(code);
+      const user=result.user;
+      const token=await user.getIdToken(true);
+      const actualPhone=user.phoneNumber;
+
+      if(actualPhone!==phone){
+        await firebaseAuth.signOut();
+        resetVerification('Verified phone number checkout number se match nahi hua.');
+        return;
+      }
+
+      verifiedIdToken=token;
+      verifiedPhone=actualPhone;
+      placeBtn.disabled=false;
+      placeBtn.textContent='Place order request';
+      showOtpStatus('Phone successfully verified ✓');
+      otpCode.disabled=true;
+      sendBtn.disabled=true;
+    }catch(error){
+      showOtpStatus(friendlyFirebaseError(error));
+      verifyBtn.disabled=false;
+    }
+  });
 
   async function sendOrder(){
     if(sendingOrder)return;
+
     if(!form.checkValidity()){
-      showStatus('Please complete all required fields correctly: full name, 10-digit mobile number, delivery address, city/local area, and 6-digit PIN code.');
+      showCheckoutStatus('Please name, mobile, address, city aur 6-digit PIN sahi enter karein.');
       const invalid=form.querySelector(':invalid');
       if(invalid){invalid.focus();invalid.reportValidity();}
       return;
     }
-    if(!cart.length){showStatus('Your cart is empty. Add a product before placing an order.');return;}
+    if(!cart.length){showCheckoutStatus('Cart empty hai. Pehle product add karein.');return;}
+
+    const current=currentPhone();
+    if(!verifiedIdToken||!verifiedPhone||verifiedPhone!==current){
+      showCheckoutStatus('Order se pehle isi mobile number ka OTP verify karein.');
+      return;
+    }
+
     const f=new FormData(form);
     const orderTotals=getTotals();
     const order={
@@ -90,42 +506,64 @@ function checkout(){
         city:String(f.get('city')||'').trim(),
         pin:String(f.get('pin')||'').trim()
       },
-      paymentMethod:String(f.get('payment')||'COD'),
+      paymentMethod:'COD',
       items:cart.map(p=>({id:String(p.id),name:String(p.name),qty:Number(p.qty)})),
       subtotal:orderTotals.subtotal,
       deliveryCharge:orderTotals.deliveryCharge,
       total:orderTotals.total,
       currency:'INR'
     };
-    sendingOrder=true;btn.disabled=true;btn.textContent='Sending request…';
-    showStatus('Sending your order request. Please wait and do not click again.');
+
+    sendingOrder=true;
+    placeBtn.disabled=true;
+    placeBtn.textContent='Sending request…';
+    showCheckoutStatus('Order request bheji ja rahi hai. Please wait.');
+
     try{
       const response=await fetch('/.netlify/functions/place-order',{
         method:'POST',
-        headers:{'Content-Type':'application/json'},
+        headers:{
+          'Content-Type':'application/json',
+          'Authorization':'Bearer '+verifiedIdToken
+        },
         body:JSON.stringify(order)
       });
+
       let data;
       try{data=await response.json();}
-      catch{throw new Error('Order service returned an invalid response. Please contact Mewa Veda before retrying.');}
+      catch{throw new Error('Order service ka response invalid hai. Mewa Veda se contact karein.');}
+
       if(!response.ok||data.ok!==true){
-        throw new Error(data.message||'Order could not be confirmed. Please contact Mewa Veda before retrying.');
+        throw new Error(data.message||'Order confirm nahi hua. Mewa Veda se contact karein.');
       }
-      $('content').innerHTML=`<h3>Order received successfully</h3><p>Your order ID: <strong id="confirmedOrderId"></strong></p><p class="notice">Payment: Cash on Delivery — unpaid. Delivery charges are shown in the checkout summary; final delivery availability must be confirmed.</p><button class="btn alt" id="closeAfterRequest" type="button">Close</button>`;
+
+      $('content').innerHTML=`
+        <h3>Order request received</h3>
+        <p>Your order ID: <strong id="confirmedOrderId"></strong></p>
+        <p class="notice">Payment: Cash on Delivery — unpaid. Order aur local delivery availability business se confirm hogi.</p>
+        <button class="btn alt" id="closeAfterRequest" type="button">Close</button>`;
       $('confirmedOrderId').textContent=data.orderId||'Confirmation pending';
       $('closeAfterRequest').onclick=()=>$('back').classList.remove('open');
-    }catch(err){
-      sendingOrder=false;btn.disabled=false;btn.textContent='Place order request';
-      showStatus(err.message||'Could not confirm the order. Please contact Mewa Veda before retrying.');
+    }catch(error){
+      sendingOrder=false;
+      placeBtn.disabled=!verifiedIdToken;
+      placeBtn.textContent=verifiedIdToken?'Place order request':'Verify phone first';
+      showCheckoutStatus(error.message||'Order confirm nahi hua. Mewa Veda se contact karein.');
     }
   }
-  btn.addEventListener('click',sendOrder);
-  form.addEventListener('submit',e=>{e.preventDefault();sendOrder();});
+
+  placeBtn.addEventListener('click',sendOrder);
+  form.addEventListener('submit',event=>{event.preventDefault();sendOrder();});
 }
+
 $('cartBtn').onclick=openCart;
 $('close').onclick=()=>$('back').classList.remove('open');
 $('back').onclick=e=>{if(e.target===$('back'))$('back').classList.remove('open')};
-$('bulkBtn').onclick=()=>openInfo('Wholesale enquiry','<p>Wholesale rates and minimum quantity business se confirm karein.</p><p>WhatsApp: +91 87090 11592</p>');
-renderProducts();renderSpices();
+$('bulkBtn').onclick=()=>openInfo('Wholesale enquiry','<p>Wholesale rates and minimum quantity business se confirm karein.</p><p>Phone: +91 87090 11592</p>');
+
+renderProducts();
+renderSpices();
 })();
-</script></body></html>
+</script>
+</body>
+</html>
