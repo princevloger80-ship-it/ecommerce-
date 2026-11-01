@@ -1,9 +1,11 @@
+
 <!doctype html>
 <html lang="hi">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Mewa Veda | Dry Fruits & Khade Masale</title>
+
 <style>
 :root{--green:#164b38;--green2:#0c3528;--gold:#c98a34;--paper:#fffdf8;--bg:#f8f3e9;--ink:#2c2419;--muted:#756956;--line:#e7dcc9}
 *{box-sizing:border-box}
@@ -53,10 +55,81 @@ button:disabled{opacity:.55;cursor:not-allowed}
 .summaryline{display:flex;justify-content:space-between;gap:16px;margin:7px 0}
 .grandtotal{border-top:1px solid var(--line);padding-top:10px;font-size:19px;font-weight:bold}
 .hp{position:absolute;left:-10000px;width:1px;height:1px;overflow:hidden}
-@media(max-width:760px){.hero{grid-template-columns:1fr;padding-top:32px}.hero-art{min-height:190px;font-size:95px}.grid{grid-template-columns:repeat(2,minmax(0,1fr))}.nav{padding:14px 4%}.section{padding:30px 4%}}
-@media(max-width:420px){.grid{gap:8px}.body{padding:10px}.body h3{font-size:16px}.art{height:105px;font-size:45px}.btn{padding:10px 12px}}
+
+/* CUSTOMER ORDER TRACKING */
+.track-section{
+  max-width:650px;
+  margin:35px auto;
+  padding:25px;
+  background:var(--paper);
+  border:1px solid var(--line);
+  border-radius:12px;
+}
+.track-section h2{
+  font:30px Georgia,serif;
+  margin:0 0 10px;
+  color:var(--green);
+}
+.track-section p{
+  color:var(--muted);
+  font-size:13px;
+  line-height:1.6;
+}
+.track-section input{
+  display:block;
+  width:100%;
+  padding:13px;
+  margin:12px 0;
+  border:1px solid var(--line);
+  border-radius:6px;
+  background:white;
+}
+.track-section button{
+  width:100%;
+  padding:13px;
+  border:0;
+  border-radius:6px;
+  background:var(--green);
+  color:white;
+  font-weight:bold;
+}
+.track-result{
+  display:none;
+  margin-top:18px;
+  padding:15px;
+  border-radius:8px;
+  line-height:1.7;
+  overflow-wrap:anywhere;
+}
+.track-result.success{
+  display:block;
+  background:#edf6ed;
+  color:#164b38;
+}
+.track-result.error{
+  display:block;
+  background:#fff0ed;
+  color:#a32118;
+}
+
+@media(max-width:760px){
+  .hero{grid-template-columns:1fr;padding-top:32px}
+  .hero-art{min-height:190px;font-size:95px}
+  .grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .nav{padding:14px 4%}
+  .section{padding:30px 4%}
+}
+@media(max-width:420px){
+  .grid{gap:8px}
+  .body{padding:10px}
+  .body h3{font-size:16px}
+  .art{height:105px;font-size:45px}
+  .btn{padding:10px 12px}
+  .track-section{margin:20px 4%;padding:17px}
+}
 </style>
 </head>
+
 <body>
 
 <div class="top">
@@ -109,6 +182,47 @@ button:disabled{opacity:.55;cursor:not-allowed}
     <p>Orders are sent for confirmation.</p>
   </div>
   <p>Free delivery on orders of ₹799 or more. Orders below ₹799 have a ₹50 delivery charge. Cash on Delivery only. Online payment is not connected yet. An order is confirmed only when the website shows a confirmation and order ID. Never enter a UPI PIN or card details into this website.</p>
+</section>
+
+<!-- CUSTOMER ORDER TRACKING SECTION -->
+
+<section class="track-section" id="track-order">
+  <h2>Track Your Order</h2>
+  <p>
+    Apna Order ID aur order karte waqt diya hua mobile number
+    enter karke apne order ka current status check karein.
+  </p>
+
+  <form id="mv-track-form">
+    <input
+      type="text"
+      id="mv-order-id"
+      placeholder="Enter Order ID (e.g. MV-...)"
+      maxlength="60"
+      required
+    >
+
+    <input
+      type="tel"
+      id="mv-order-phone"
+      placeholder="Enter 10-digit mobile number"
+      maxlength="10"
+      inputmode="numeric"
+      pattern="[0-9]{10}"
+      required
+    >
+
+    <button type="submit" id="mv-track-button">
+      Track Order
+    </button>
+  </form>
+
+  <div
+    id="mv-track-result"
+    class="track-result"
+    role="status"
+    aria-live="polite">
+  </div>
 </section>
 
 <footer class="footer">
@@ -425,11 +539,88 @@ function checkout(){
   $('back').classList.add('open');
 }
 
+// =====================================
+// CUSTOMER ORDER TRACKING SCRIPT
+// =====================================
+
+const trackForm = $('mv-track-form');
+const trackButton = $('mv-track-button');
+const trackResult = $('mv-track-result');
+
+trackForm.addEventListener('submit', async function(event) {
+  event.preventDefault();
+
+  const orderId = $('mv-order-id').value.trim();
+  const phone = $('mv-order-phone').value.replace(/\D/g, '');
+
+  trackResult.style.display = 'block';
+  trackResult.className = 'track-result';
+  trackResult.textContent = '';
+
+  if (orderId.length < 5 || orderId.length > 60 || phone.length !== 10) {
+    trackResult.className = 'track-result error';
+    trackResult.textContent =
+      'Please valid Order ID aur 10-digit mobile number enter karein.';
+    return;
+  }
+
+  trackButton.disabled = true;
+  trackButton.textContent = 'Checking...';
+
+  try {
+    const response = await fetch('/.netlify/functions/track-order', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        orderId: orderId,
+        phone: phone
+      })
+    });
+
+    const data = await response.json();
+
+    if (!response.ok || !data.ok) {
+      throw new Error(
+        data.message || 'Order nahi mila. Details check karein.'
+      );
+    }
+
+    trackResult.className = 'track-result success';
+
+    const heading = document.createElement('strong');
+    heading.textContent = 'Order Status';
+
+    const idLine = document.createElement('div');
+    idLine.textContent = 'Order ID: ' + data.orderId;
+
+    const statusLine = document.createElement('div');
+    statusLine.textContent = 'Current Status: ' + data.status;
+
+    trackResult.replaceChildren(heading, idLine, statusLine);
+
+  } catch(error) {
+    trackResult.className = 'track-result error';
+    trackResult.textContent =
+      error.message || 'Order track nahi ho paya. Please dobara try karein.';
+  } finally {
+    trackButton.disabled = false;
+    trackButton.textContent = 'Track Order';
+  }
+});
+
+// =====================================
+// WEBSITE BUTTONS
+// =====================================
+
 $('cartBtn').onclick=openCart;
 $('close').onclick=()=>$('back').classList.remove('open');
+
 $('back').onclick=e=>{
   if(e.target===$('back'))$('back').classList.remove('open');
 };
+
 $('bulkBtn').onclick=()=>openInfo(
   'Wholesale enquiry',
   '<p>Wholesale rates and minimum quantity business se confirm karein.</p><p>Phone: +91 87090 11592</p>'
@@ -437,7 +628,9 @@ $('bulkBtn').onclick=()=>openInfo(
 
 renderProducts();
 renderSpices();
+
 })();
 </script>
+
 </body>
 </html>
