@@ -1,9 +1,48 @@
+const PRODUCTS = {
+  badam: { name: "Badam / Almonds", price: 275 },
+  kaju: { name: "Kaju / Cashews", price: 265 },
+  pista: { name: "Pista / Pistachios", price: 465 },
+  kishmish: { name: "Kishmish / Raisins", price: 125 },
+  akhrot: { name: "Akhrot / Walnuts", price: 300 },
+  anjeer: { name: "Anjeer / Dried Figs", price: 250 },
 
-const admin = require("firebase-admin");
+  "spice-cumin-seeds-jeera": {
+    name: "Cumin Seeds / Jeera",
+    price: 399
+  },
+  "spice-black-pepper-kali-mirch": {
+    name: "Black Pepper / Kali Mirch",
+    price: 899
+  },
+  "spice-green-cardamom-chhoti-elaichi": {
+    name: "Green Cardamom / Chhoti Elaichi",
+    price: 4500
+  },
+  "spice-cinnamon-dalchini": {
+    name: "Cinnamon / Dalchini",
+    price: 600
+  },
+  "spice-cloves-laung": {
+    name: "Cloves / Laung",
+    price: 1200
+  },
+  "spice-fennel-seeds-saunf": {
+    name: "Fennel Seeds / Saunf",
+    price: 250
+  },
+  "spice-black-cardamom-badi-elaichi": {
+    name: "Black Cardamom / Badi Elaichi",
+    price: 2500
+  }
+};
+
+const FREE_DELIVERY_MINIMUM = 799;
+const DELIVERY_CHARGE = 50;
 
 exports.handler = async (event) => {
   const headers = {
-    "Content-Type": "application/json; charset=utf-8"
+    "Content-Type": "application/json; charset=utf-8",
+    "Cache-Control": "no-store"
   };
 
   const reply = (statusCode, data) => ({
@@ -15,35 +54,22 @@ exports.handler = async (event) => {
   if (event.httpMethod !== "POST") {
     return reply(405, {
       ok: false,
-      message: "Only POST is allowed."
+      message: "Only POST requests are allowed."
     });
   }
 
   try {
-    // 1. Firebase Admin configuration
-    const serviceAccountJson =
-      process.env.FIREBASE_SERVICE_ACCOUNT;
-
-    if (!serviceAccountJson) {
-      return reply(500, {
+    if (!event.body || event.body.length > 20000) {
+      return reply(400, {
         ok: false,
-        message: "Order verification is not configured."
+        message: "Order data is missing or too large."
       });
     }
 
-    if (!admin.apps.length) {
-      const serviceAccount = JSON.parse(serviceAccountJson);
-
-      admin.initializeApp({
-        credential: admin.credential.cert(serviceAccount)
-      });
-    }
-
-    // 2. Read the checkout request
     let order;
 
     try {
-      order = JSON.parse(event.body || "");
+      order = JSON.parse(event.body);
     } catch {
       return reply(400, {
         ok: false,
@@ -51,8 +77,28 @@ exports.handler = async (event) => {
       });
     }
 
-    const phone = String(order?.customer?.phone || "")
-      .replace(/\D/g, "");
+    // Basic bot trap: real customers should leave this field empty.
+    if (String(order.website || "").trim() !== "") {
+      return reply(400, {
+        ok: false,
+        message: "Invalid order request."
+      });
+    }
+
+    const customer = order.customer || {};
+
+    const name = String(customer.name || "").trim();
+    const phone = String(customer.phone || "").replace(/\D/g, "");
+    const address = String(customer.address || "").trim();
+    const city = String(customer.city || "").trim();
+    const pin = String(customer.pin || "").trim();
+
+    if (name.length < 2 || name.length > 100) {
+      return reply(400, {
+        ok: false,
+        message: "Please enter a valid customer name."
+      });
+    }
 
     if (!/^[6-9]\d{9}$/.test(phone)) {
       return reply(400, {
@@ -61,48 +107,104 @@ exports.handler = async (event) => {
       });
     }
 
-    // 3. Verify Firebase ID token
-    const authHeader =
-      event.headers?.authorization ||
-      event.headers?.Authorization ||
-      "";
-
-    const match = authHeader.match(/^Bearer\s+(.+)$/i);
-
-    if (!match) {
-      return reply(401, {
+    if (address.length < 8 || address.length > 500) {
+      return reply(400, {
         ok: false,
-        message: "Please verify your phone number first."
+        message: "Please enter a complete delivery address."
       });
     }
 
-    let decodedToken;
-
-    try {
-      decodedToken = await admin.auth().verifyIdToken(match[1]);
-    } catch {
-      return reply(401, {
+    if (city.length < 2 || city.length > 100) {
+      return reply(400, {
         ok: false,
-        message: "Phone verification expired. Please verify again."
+        message: "Please enter a valid city or delivery area."
       });
     }
 
-    const verifiedPhone = decodedToken.phone_number;
-
-    if (verifiedPhone !== `+91${phone}`) {
-      return reply(403, {
+    if (!/^\d{6}$/.test(pin)) {
+      return reply(400, {
         ok: false,
-        message: "Verified phone number does not match the order."
+        message: "Enter a valid 6-digit PIN code."
       });
     }
 
-    // 4. Forward only verified orders to the existing order service
+    if (order.paymentMethod !== "COD") {
+      return reply(400, {
+        ok: false,
+        message: "Only Cash on Delivery is available."
+      });
+    }
+
+    if (!Array.isArray(order.items) ||
+        order.items.length < 1 ||
+        order.items.length > 20) {
+      return reply(400, {
+        ok: false,
+        message: "Your cart is empty or contains too many items."
+      });
+    }
+
+    // Recalculate every item using server-side prices.
+    const verifiedItems = [];
+    let subtotal = 0;
+
+    for (const item of order.items) {
+      const id = String(item.id || "");
+      const product = PRODUCTS[id];
+      const qty = Number(item.qty);
+
+      if (!product) {
+        return reply(400, {
+          ok: false,
+          message: "One of the selected products is unavailable."
+        });
+      }
+
+      if (!Number.isInteger(qty) || qty < 1 || qty > 20) {
+        return reply(400, {
+          ok: false,
+          message: "Invalid product quantity."
+        });
+      }
+
+      const lineTotal = product.price * qty;
+      subtotal += lineTotal;
+
+      verifiedItems.push({
+        id,
+        name: product.name,
+        qty
+      });
+    }
+
+    const deliveryCharge =
+      subtotal >= FREE_DELIVERY_MINIMUM ? 0 : DELIVERY_CHARGE;
+
+    const total = subtotal + deliveryCharge;
+
+    // The website cannot choose or alter these calculated prices.
+    const verifiedOrder = {
+      customer: {
+        name,
+        phone,
+        address,
+        city,
+        pin
+      },
+      paymentMethod: "COD",
+      items: verifiedItems,
+      subtotal,
+      deliveryCharge,
+      total,
+      currency: "INR"
+    };
+
     const appsScriptUrl = process.env.ORDER_API_URL;
 
-    if (!appsScriptUrl || !appsScriptUrl.endsWith("/exec")) {
+    if (!appsScriptUrl || !/^https:\/\/script\.google\.com\/macros\/s\/.+\/exec$/.test(appsScriptUrl)) {
       return reply(500, {
         ok: false,
-        message: "Order endpoint is not configured."
+        message: "Order service is not configured. Please contact Mewa Veda."
       });
     }
 
@@ -111,10 +213,11 @@ exports.handler = async (event) => {
       headers: {
         "Content-Type": "text/plain;charset=utf-8"
       },
-      body: event.body || ""
+      body: JSON.stringify(verifiedOrder)
     });
 
     const responseText = await upstream.text();
+
     let data;
 
     try {
@@ -129,15 +232,22 @@ exports.handler = async (event) => {
     if (!upstream.ok || data.ok !== true) {
       return reply(502, {
         ok: false,
-        message: data.message || "Order could not be confirmed."
+        message: data.message || "Order could not be saved. Please try again."
       });
     }
 
-    return reply(200, data);
-  } catch {
+    return reply(200, {
+      ok: true,
+      orderId: data.orderId || data.id || null,
+      message: "Order request received."
+    });
+
+  } catch (error) {
+    console.error("Place order error:", error);
+
     return reply(500, {
       ok: false,
-      message: "Order verification service encountered an error."
+      message: "Order service encountered an error. Please try again later."
     });
   }
 };
