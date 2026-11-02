@@ -418,6 +418,33 @@ function checkout(){
         <input name="phone" type="tel" inputmode="numeric" pattern="[6-9][0-9]{9}" minlength="10" maxlength="10" required placeholder="10 digit mobile number" autocomplete="tel-national">
       </div>
 
+      <!-- OPTIONAL CUSTOMER EMAIL -->
+      <div class="field">
+        <label>Email address (optional)</label>
+        <input
+          name="email"
+          type="email"
+          maxlength="254"
+          placeholder="you@example.com"
+          autocomplete="email"
+        >
+      </div>
+
+      <!-- EMAIL NOTIFICATION CONSENT -->
+      <div class="field" style="display:flex;align-items:flex-start;gap:9px">
+        <input
+          name="emailNotifications"
+          type="checkbox"
+          value="yes"
+          style="width:auto;margin-top:2px;flex-shrink:0"
+        >
+        <label style="font-size:13px;color:var(--ink);line-height:1.5">
+          I agree to receive order status updates by email from Mewa Veda.
+        </label>
+      </div>
+
+      <p class="notice">Email updates optional hain. Checkbox select karne par Confirmed, Shipped aur Delivered status ke email updates mil sakte hain.</p>
+
       <div class="field">
         <label>Full delivery address</label>
         <textarea name="address" required maxlength="500" rows="3" autocomplete="street-address"></textarea>
@@ -471,12 +498,31 @@ function checkout(){
     }
 
     const f=new FormData(form);
+
+    // EMAIL VALIDATION AND CONSENT
+    const email=String(f.get('email')||'').trim();
+    const emailNotifications=f.get('emailNotifications')==='yes';
+
+    if(email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)){
+      status.textContent='Please valid email address enter karein.';
+      form.elements.email.focus();
+      return;
+    }
+
+    if(emailNotifications && !email){
+      status.textContent='Email notifications ke liye pehle apna email address enter karein.';
+      form.elements.email.focus();
+      return;
+    }
+
     const orderTotals=getTotals();
 
     const order={
       customer:{
         name:String(f.get('name')||'').trim(),
         phone:String(f.get('phone')||'').trim(),
+        email:email,
+        emailNotifications:emailNotifications,
         address:String(f.get('address')||'').trim(),
         city:String(f.get('city')||'').trim(),
         pin:String(f.get('pin')||'').trim()
