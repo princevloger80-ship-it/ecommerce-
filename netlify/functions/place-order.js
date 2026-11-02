@@ -1,12 +1,33 @@
 
 const PRODUCTS = {
-  badam: { name: "Badam / Almonds", price: 275 },
-  kaju: { name: "Kaju / Cashews", price: 265 },
-  pista: { name: "Pista / Pistachios", price: 465 },
-  kishmish: { name: "Kishmish / Raisins", price: 125 },
-  akhrot: { name: "Akhrot / Walnuts", price: 300 },
-  anjeer: { name: "Anjeer / Dried Figs", price: 250 },
+  // Existing Dry Fruits
+  badam: { name: "Badam / Almonds (250g)", price: 275 },
+  kaju: { name: "Kaju / Cashews (250g)", price: 265 },
+  pista: { name: "Pista / Pistachios (250g)", price: 465 },
+  kishmish: { name: "Kishmish / Raisins (250g)", price: 125 },
+  akhrot: { name: "Akhrot / Walnuts (250g)", price: 300 },
+  anjeer: { name: "Anjeer / Dried Figs (250g)", price: 250 },
 
+  // New Dry Fruits & Other Products
+  "chhuhara-500g": { name: "Chhuhara (500g)", price: 200 },
+  "chhuhara-1kg": { name: "Chhuhara (1kg)", price: 399 },
+
+  "makhana-100g": { name: "Makhana (100g)", price: 150 },
+  "makhana-250g": { name: "Makhana (250g)", price: 370 },
+  "makhana-500g": { name: "Makhana (500g)", price: 700 },
+
+  "nariyal-powder-250g": { name: "Nariyal Powder (250g)", price: 99 },
+  "nariyal-powder-500g": { name: "Nariyal Powder (500g)", price: 199 },
+
+  "sabudana-200g": { name: "Sabudana (200g)", price: 35 },
+  "sabudana-500g": { name: "Sabudana (500g)", price: 70 },
+
+  "mungfali-100g": { name: "Mungfali (100g)", price: 20 },
+  "mungfali-250g": { name: "Mungfali (250g)", price: 50 },
+  "mungfali-500g": { name: "Mungfali (500g)", price: 100 },
+  "mungfali-1kg": { name: "Mungfali (1kg)", price: 190 },
+
+  // Existing Whole Spices
   "spice-cumin-seeds-jeera": {
     name: "Cumin Seeds / Jeera",
     price: 399
@@ -34,7 +55,30 @@ const PRODUCTS = {
   "spice-black-cardamom-badi-elaichi": {
     name: "Black Cardamom / Badi Elaichi",
     price: 2500
-  }
+  },
+
+  // New Khada Masala
+  "ajwain-250g": { name: "Ajwain (250g)", price: 99 },
+  "ajwain-500g": { name: "Ajwain (500g)", price: 199 },
+  "ajwain-1kg": { name: "Ajwain (1kg)", price: 399 },
+
+  "methi-250g": { name: "Methi (250g)", price: 49 },
+  "methi-500g": { name: "Methi (500g)", price: 99 },
+  "methi-1kg": { name: "Methi (1kg)", price: 199 },
+
+  "sarso-250g": { name: "Sarso (250g)", price: 59 },
+  "sarso-500g": { name: "Sarso (500g)", price: 118 },
+  "sarso-1kg": { name: "Sarso (1kg)", price: 236 },
+
+  "kala-sarso-250g": { name: "Kala Sarso (250g)", price: 59 },
+  "kala-sarso-500g": { name: "Kala Sarso (500g)", price: 118 },
+  "kala-sarso-1kg": { name: "Kala Sarso (1kg)", price: 236 },
+
+  "khadi-mirch-250g": { name: "Khadi Mirch (250g)", price: 100 },
+  "khadi-mirch-500g": { name: "Khadi Mirch (500g)", price: 199 },
+
+  "khadi-haldi-250g": { name: "Khadi Haldi (250g)", price: 87 },
+  "khadi-haldi-500g": { name: "Khadi Haldi (500g)", price: 175 }
 };
 
 const FREE_DELIVERY_MINIMUM = 799;
