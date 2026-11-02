@@ -1,3 +1,4 @@
+
 const PRODUCTS = {
   badam: { name: "Badam / Almonds", price: 275 },
   kaju: { name: "Kaju / Cashews", price: 265 },
@@ -77,7 +78,7 @@ exports.handler = async (event) => {
       });
     }
 
-    // Basic bot trap: real customers should leave this field empty.
+    // Basic bot trap
     if (String(order.website || "").trim() !== "") {
       return reply(400, {
         ok: false,
@@ -92,6 +93,24 @@ exports.handler = async (event) => {
     const address = String(customer.address || "").trim();
     const city = String(customer.city || "").trim();
     const pin = String(customer.pin || "").trim();
+
+    // Email details
+    const email = String(customer.email || "").trim();
+    const emailNotifications = customer.emailNotifications === true;
+
+    if (email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+      return reply(400, {
+        ok: false,
+        message: "Please enter a valid email address."
+      });
+    }
+
+    if (emailNotifications && !email) {
+      return reply(400, {
+        ok: false,
+        message: "Enter your email address to receive order updates."
+      });
+    }
 
     if (name.length < 2 || name.length > 100) {
       return reply(400, {
@@ -135,16 +154,18 @@ exports.handler = async (event) => {
       });
     }
 
-    if (!Array.isArray(order.items) ||
-        order.items.length < 1 ||
-        order.items.length > 20) {
+    if (
+      !Array.isArray(order.items) ||
+      order.items.length < 1 ||
+      order.items.length > 20
+    ) {
       return reply(400, {
         ok: false,
         message: "Your cart is empty or contains too many items."
       });
     }
 
-    // Recalculate every item using server-side prices.
+    // Recalculate every item using server-side prices
     const verifiedItems = [];
     let subtotal = 0;
 
@@ -182,14 +203,16 @@ exports.handler = async (event) => {
 
     const total = subtotal + deliveryCharge;
 
-    // The website cannot choose or alter these calculated prices.
+    // Verified order sent to Google Apps Script
     const verifiedOrder = {
       customer: {
         name,
         phone,
         address,
         city,
-        pin
+        pin,
+        email,
+        emailNotifications
       },
       paymentMethod: "COD",
       items: verifiedItems,
@@ -201,7 +224,10 @@ exports.handler = async (event) => {
 
     const appsScriptUrl = process.env.ORDER_API_URL;
 
-    if (!appsScriptUrl || !/^https:\/\/script\.google\.com\/macros\/s\/.+\/exec$/.test(appsScriptUrl)) {
+    if (
+      !appsScriptUrl ||
+      !/^https:\/\/script\.google\.com\/macros\/s\/.+\/exec$/.test(appsScriptUrl)
+    ) {
       return reply(500, {
         ok: false,
         message: "Order service is not configured. Please contact Mewa Veda."
