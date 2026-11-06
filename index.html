@@ -1,4 +1,4 @@
- 
+
 <!doctype html>
 <html lang="hi">
 <head>
@@ -351,7 +351,15 @@ const spices = [
   },
   // Existing spices whose prices were not changed
   {name:'Fennel Seeds / Saunf',emoji:'🌱',price:250,unit:'1 kg'},
-  {name:'Black Cardamom / Badi Elaichi',emoji:'🌰',price:2500,unit:'1 kg'},
+  {
+    name:'Black Cardamom / Badi Elaichi',emoji:'🌰',
+    variants:[
+      {id:'spice-black-cardamom-badi-elaichi-100g',unit:'100 g',price:260},
+      {id:'spice-black-cardamom-badi-elaichi-250g',unit:'250 g',price:650},
+      {id:'spice-black-cardamom-badi-elaichi-500g',unit:'500 g',price:1300},
+      {id:'spice-black-cardamom-badi-elaichi-1kg',unit:'1 kg',price:2600}
+    ]
+  },
 
   // New khada masala
   {
