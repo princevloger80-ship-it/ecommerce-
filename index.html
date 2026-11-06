@@ -182,7 +182,7 @@ button:disabled{opacity:.55;cursor:not-allowed}
     <h2>Ordering information</h2>
     <p>Orders are sent for confirmation.</p>
   </div>
-  <p>Free delivery on orders of ₹799 or more. Orders below ₹799 have a ₹50 delivery charge. Cash on Delivery only. Online payment is not connected yet. An order is confirmed only when the website shows a confirmation and order ID. Never enter a UPI PIN or card details into this website.</p>
+  <p>Delivery charge: ₹0. Cash on Delivery only. Online payment is not connected yet. An order is confirmed only when the website shows a confirmation and order ID. Never enter a UPI PIN or card details into this website.</p>
 </section>
 
 <!-- CUSTOMER ORDER TRACKING -->
@@ -245,8 +245,8 @@ button:disabled{opacity:.55;cursor:not-allowed}
 (function(){
 'use strict';
 
-const FREE_DELIVERY_MINIMUM = 799;
-const DELIVERY_CHARGE = 50;
+const FREE_DELIVERY_MINIMUM = 0;
+const DELIVERY_CHARGE = 0;
 
 // =====================================
 // ALL PRODUCTS
@@ -309,12 +309,43 @@ const products = [
 // =====================================
 
 const spices = [
-  // Existing spices
-  {name:'Cumin Seeds / Jeera',emoji:'🌿',price:399,unit:'1 kg'},
-  {name:'Black Pepper / Kali Mirch',emoji:'⚫',price:960,unit:'1 kg'},
-  {name:'Green Cardamom / Chhoti Elaichi',emoji:'🟢',price:4500,unit:'1 kg'},
-  {name:'Cinnamon / Dalchini',emoji:'🪵',price:600,unit:'1 kg'},
-  {name:'Cloves / Laung',emoji:'🍂',price:1200,unit:'1 kg'},
+  // Updated pack prices
+  {
+    name:'Cumin Seeds / Jeera',emoji:'🌿',
+    variants:[
+      {id:'spice-cumin-seeds-jeera-500g',unit:'500 g',price:199}
+    ]
+  },
+  {
+    name:'Golki / Black Pepper / Kali Mirch',emoji:'⚫',
+    variants:[
+      {id:'spice-black-pepper-kali-mirch-500g',unit:'500 g',price:480}
+    ]
+  },
+  {
+    name:'Green Cardamom / Chhoti Elaichi',emoji:'🟢',
+    variants:[
+      {id:'spice-green-cardamom-chhoti-elaichi-100g',unit:'100 g',price:500},
+      {id:'spice-green-cardamom-chhoti-elaichi-250g',unit:'250 g',price:1250},
+      {id:'spice-green-cardamom-chhoti-elaichi-500g',unit:'500 g',price:2500},
+      {id:'spice-green-cardamom-chhoti-elaichi-1kg',unit:'1 kg',price:4900}
+    ]
+  },
+  {
+    name:'Cinnamon / Dalchini',emoji:'🪵',
+    variants:[
+      {id:'spice-cinnamon-dalchini-250g',unit:'250 g',price:149},
+      {id:'spice-cinnamon-dalchini-500g',unit:'500 g',price:299}
+    ]
+  },
+  {
+    name:'Cloves / Laung',emoji:'🍂',
+    variants:[
+      {id:'spice-cloves-laung-250g',unit:'250 g',price:300},
+      {id:'spice-cloves-laung-500g',unit:'500 g',price:600}
+    ]
+  },
+  // Existing spices whose prices were not changed
   {name:'Fennel Seeds / Saunf',emoji:'🌱',price:250,unit:'1 kg'},
   {name:'Black Cardamom / Badi Elaichi',emoji:'🌰',price:2500,unit:'1 kg'},
 
@@ -406,9 +437,7 @@ function totalsHtml(t){
       <strong>${money(t.total)}</strong>
     </div>
     <p class="notice">
-      ${t.subtotal>=FREE_DELIVERY_MINIMUM
-        ? 'Congratulations! Aapko free delivery mil rahi hai.'
-        : `Free delivery ke liye ${money(FREE_DELIVERY_MINIMUM-t.subtotal)} aur add karein. ₹${DELIVERY_CHARGE} delivery charge lagega.`}
+      Delivery charge ₹0 hai. Aapka order total mein koi extra delivery fee nahi jodi jayegi.
     </p>`;
 }
 
@@ -771,8 +800,7 @@ function checkout(){
   $('content').innerHTML=`
     <p class="notice">
       Cash on Delivery only. OTP ki zarurat nahi hai.
-      Free delivery ₹799 ya usse zyada ke order par;
-      usse kam par ₹50 delivery charge.
+      Sabhi orders par delivery charge ₹0 hai.
     </p>
 
     <form id="checkoutForm" novalidate>
