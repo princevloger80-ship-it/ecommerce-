@@ -7,7 +7,15 @@ const PRODUCTS = {
   kishmish: { name: "Kishmish / Raisins (250g)", price: 125 },
   akhrot: { name: "Akhrot / Walnuts (250g)", price: 300 },
   anjeer: { name: "Anjeer / Dried Figs (250g)", price: 250 },
+  khajoor: {
+  name: "Khajoor / Dates (500g)",
+  price: 280
+},
 
+mix: {
+  name: "Mix Dry Fruits (250g)",
+  price: 270
+},
   // Other Products
   "chhuhara-500g": { name: "Chhuhara (500g)", price: 200 },
   "chhuhara-1kg": { name: "Chhuhara (1kg)", price: 399 },
