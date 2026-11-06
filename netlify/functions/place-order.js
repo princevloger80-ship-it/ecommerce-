@@ -1,4 +1,4 @@
- 
+
 const PRODUCTS = {
   // Dry Fruits
   badam: { name: "Badam / Almonds (250g)", price: 275 },
@@ -8,7 +8,7 @@ const PRODUCTS = {
   akhrot: { name: "Akhrot / Walnuts (250g)", price: 300 },
   anjeer: { name: "Anjeer / Dried Figs (250g)", price: 250 },
 
-  // Other Dry Fruits
+  // Other Products
   "chhuhara-500g": { name: "Chhuhara (500g)", price: 200 },
   "chhuhara-1kg": { name: "Chhuhara (1kg)", price: 399 },
   "makhana-100g": { name: "Makhana (100g)", price: 150 },
@@ -25,62 +25,92 @@ const PRODUCTS = {
 
   // Jeera
   "spice-cumin-seeds-jeera-500g": {
-    name: "Jeera (500g)", price: 199
+    name: "Cumin Seeds / Jeera (500g)",
+    price: 199
   },
   "spice-cumin-seeds-jeera-1kg": {
-    name: "Jeera (1kg)", price: 398
+    name: "Cumin Seeds / Jeera (1kg)",
+    price: 398
   },
 
   // Golki / Black Pepper
   "spice-black-pepper-kali-mirch-500g": {
-    name: "Golki / Black Pepper (500g)", price: 480
+    name: "Golki / Black Pepper (500g)",
+    price: 480
   },
   "spice-black-pepper-kali-mirch-1kg": {
-    name: "Golki / Black Pepper (1kg)", price: 960
+    name: "Golki / Black Pepper (1kg)",
+    price: 960
   },
 
   // Chhoti Elaichi
   "spice-green-cardamom-chhoti-elaichi-100g": {
-    name: "Chhoti Elaichi (100g)", price: 500
+    name: "Chhoti Elaichi (100g)",
+    price: 500
   },
   "spice-green-cardamom-chhoti-elaichi-250g": {
-    name: "Chhoti Elaichi (250g)", price: 1250
+    name: "Chhoti Elaichi (250g)",
+    price: 1250
   },
   "spice-green-cardamom-chhoti-elaichi-500g": {
-    name: "Chhoti Elaichi (500g)", price: 2500
+    name: "Chhoti Elaichi (500g)",
+    price: 2500
   },
   "spice-green-cardamom-chhoti-elaichi-1kg": {
-    name: "Chhoti Elaichi (1kg)", price: 4900
+    name: "Chhoti Elaichi (1kg)",
+    price: 4900
   },
 
   // Dalchini
   "spice-cinnamon-dalchini-250g": {
-    name: "Dalchini (250g)", price: 149
+    name: "Dalchini (250g)",
+    price: 149
   },
   "spice-cinnamon-dalchini-500g": {
-    name: "Dalchini (500g)", price: 299
+    name: "Dalchini (500g)",
+    price: 299
   },
   "spice-cinnamon-dalchini-1kg": {
-    name: "Dalchini (1kg)", price: 598
+    name: "Dalchini (1kg)",
+    price: 598
   },
 
   // Laung
   "spice-cloves-laung-250g": {
-    name: "Laung (250g)", price: 300
+    name: "Laung (250g)",
+    price: 300
   },
   "spice-cloves-laung-500g": {
-    name: "Laung (500g)", price: 600
+    name: "Laung (500g)",
+    price: 600
   },
   "spice-cloves-laung-1kg": {
-    name: "Laung (1kg)", price: 1200
+    name: "Laung (1kg)",
+    price: 1200
   },
 
-  // Existing spices
+  // Saunf
   "spice-fennel-seeds-saunf": {
-    name: "Saunf (1kg)", price: 250
+    name: "Saunf (1kg)",
+    price: 250
   },
-  "spice-black-cardamom-badi-elaichi": {
-    name: "Badi Elaichi (1kg)", price: 2500
+
+  // Badi Elaichi - Updated Prices
+  "spice-black-cardamom-badi-elaichi-100g": {
+    name: "Badi Elaichi (100g)",
+    price: 260
+  },
+  "spice-black-cardamom-badi-elaichi-250g": {
+    name: "Badi Elaichi (250g)",
+    price: 650
+  },
+  "spice-black-cardamom-badi-elaichi-500g": {
+    name: "Badi Elaichi (500g)",
+    price: 1300
+  },
+  "spice-black-cardamom-badi-elaichi-1kg": {
+    name: "Badi Elaichi (1kg)",
+    price: 2600
   },
 
   // Khada Masala
@@ -108,6 +138,7 @@ const PRODUCTS = {
 };
 
 // Free delivery on every order
+const FREE_DELIVERY_MINIMUM = 0;
 const DELIVERY_CHARGE = 0;
 
 exports.handler = async (event) => {
@@ -121,19 +152,6 @@ exports.handler = async (event) => {
     headers,
     body: JSON.stringify(data)
   });
-
-  if (event.httpMethod === "OPTIONS") {
-    return {
-      statusCode: 200,
-      headers: {
-        ...headers,
-        "Access-Control-Allow-Origin": "*",
-        "Access-Control-Allow-Headers": "Content-Type",
-        "Access-Control-Allow-Methods": "POST, OPTIONS"
-      },
-      body: ""
-    };
-  }
 
   if (event.httpMethod !== "POST") {
     return reply(405, {
@@ -161,7 +179,7 @@ exports.handler = async (event) => {
       });
     }
 
-    // Bot protection
+    // Basic bot protection
     if (String(order.website || "").trim() !== "") {
       return reply(400, {
         ok: false,
@@ -176,8 +194,24 @@ exports.handler = async (event) => {
     const address = String(customer.address || "").trim();
     const city = String(customer.city || "").trim();
     const pin = String(customer.pin || "").trim();
+
     const email = String(customer.email || "").trim();
-    const emailNotifications = customer.emailNotifications === true;
+    const emailNotifications =
+      customer.emailNotifications === true;
+
+    if (email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+      return reply(400, {
+        ok: false,
+        message: "Please enter a valid email address."
+      });
+    }
+
+    if (emailNotifications && !email) {
+      return reply(400, {
+        ok: false,
+        message: "Enter your email address to receive order updates."
+      });
+    }
 
     if (name.length < 2 || name.length > 100) {
       return reply(400, {
@@ -189,7 +223,7 @@ exports.handler = async (event) => {
     if (!/^[6-9]\d{9}$/.test(phone)) {
       return reply(400, {
         ok: false,
-        message: "Enter a valid 10-digit mobile number."
+        message: "Enter a valid 10-digit Indian mobile number."
       });
     }
 
@@ -214,20 +248,6 @@ exports.handler = async (event) => {
       });
     }
 
-    if (email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
-      return reply(400, {
-        ok: false,
-        message: "Please enter a valid email address."
-      });
-    }
-
-    if (emailNotifications && !email) {
-      return reply(400, {
-        ok: false,
-        message: "Enter your email address for order updates."
-      });
-    }
-
     if (order.paymentMethod !== "COD") {
       return reply(400, {
         ok: false,
@@ -246,7 +266,7 @@ exports.handler = async (event) => {
       });
     }
 
-    // Verify product prices on the server
+    // Server-side price verification
     const verifiedItems = [];
     let subtotal = 0;
 
@@ -258,7 +278,8 @@ exports.handler = async (event) => {
       if (!product) {
         return reply(400, {
           ok: false,
-          message: "Selected product is unavailable. Please refresh the website."
+          message:
+            "One of the selected products is unavailable. Please refresh the website."
         });
       }
 
@@ -281,7 +302,11 @@ exports.handler = async (event) => {
       });
     }
 
-    const deliveryCharge = DELIVERY_CHARGE;
+    const deliveryCharge =
+      subtotal >= FREE_DELIVERY_MINIMUM
+        ? 0
+        : DELIVERY_CHARGE;
+
     const total = subtotal + deliveryCharge;
 
     const verifiedOrder = {
@@ -302,7 +327,7 @@ exports.handler = async (event) => {
       currency: "INR"
     };
 
-    // Google Apps Script URL from Netlify environment variables
+    // Google Apps Script URL from Netlify environment variable
     const appsScriptUrl = process.env.ORDER_API_URL;
 
     if (
@@ -311,7 +336,8 @@ exports.handler = async (event) => {
     ) {
       return reply(500, {
         ok: false,
-        message: "Order service is not configured."
+        message:
+          "Order service is not configured. Please contact Mewa Veda."
       });
     }
 
@@ -339,18 +365,15 @@ exports.handler = async (event) => {
     if (!upstream.ok || data.ok !== true) {
       return reply(502, {
         ok: false,
-        message: data.message || "Order could not be saved."
+        message:
+          data.message || "Order could not be saved. Please try again."
       });
     }
 
     return reply(200, {
       ok: true,
       orderId: data.orderId || data.id || null,
-      message: "Order placed successfully.",
-      subtotal,
-      deliveryCharge,
-      total,
-      paymentMethod: "COD"
+      message: "Order request received."
     });
 
   } catch (error) {
@@ -358,7 +381,9 @@ exports.handler = async (event) => {
 
     return reply(500, {
       ok: false,
-      message: "Order service encountered an error. Please try again."
+      message:
+        "Order service encountered an error. Please try again later."
     });
   }
 };
+
