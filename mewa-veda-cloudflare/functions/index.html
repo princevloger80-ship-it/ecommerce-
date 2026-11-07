@@ -1,0 +1,1194 @@
+
+<!doctype html>
+<html lang="hi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Mewa Veda | Dry Fruits & Khade Masale</title>
+
+<style>
+:root{--green:#164b38;--green2:#0c3528;--gold:#c98a34;--paper:#fffdf8;--bg:#f8f3e9;--ink:#2c2419;--muted:#756956;--line:#e7dcc9}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:15px Arial,sans-serif}
+button,input,select,textarea{font:inherit}
+button{cursor:pointer}
+button:disabled{opacity:.55;cursor:not-allowed}
+.top{background:var(--green2);color:white;padding:10px 5%;font-size:13px;display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap}
+.nav{display:flex;justify-content:space-between;align-items:center;padding:18px 5%;background:var(--paper);border-bottom:1px solid var(--line);gap:16px}
+.brand{font:bold 27px Georgia,serif;color:var(--green)}
+.tag{font-size:10px;letter-spacing:2px;color:var(--muted);margin-top:3px}
+.btn{border:0;border-radius:6px;background:var(--green);color:#fff;padding:12px 16px;font-weight:bold}
+.btn.alt{background:transparent;border:1px solid var(--green);color:var(--green)}
+.hero{padding:48px 5%;display:grid;grid-template-columns:1.1fr .9fr;gap:30px;align-items:center;background:linear-gradient(120deg,#123b2c,#286044);color:#fff8e9}
+.eyebrow{color:#efc77d;text-transform:uppercase;font-size:11px;letter-spacing:2px;font-weight:bold}
+.hero h1{font:clamp(38px,5vw,62px)/1.05 Georgia,serif;margin:16px 0}
+.hero p{line-height:1.7;color:#e0e8dc;max-width:550px}
+.hero-art{min-height:250px;border:1px solid #d5b16d66;border-radius:150px 150px 12px 12px;display:grid;place-items:center;background:radial-gradient(circle,#8a653d,#33251a);font-size:130px}
+.section{padding:38px 5%}
+.heading{margin-bottom:20px}
+.heading h2{font:32px Georgia,serif;margin:8px 0}
+.heading p{color:var(--muted);font-size:13px}
+.grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px}
+.card{border:1px solid var(--line);background:var(--paper);border-radius:10px;overflow:hidden}
+.art{height:130px;display:grid;place-items:center;font-size:58px;background:linear-gradient(135deg,#f4e8d2,#dec39a)}
+.body{padding:14px}
+.body h3{font:19px Georgia,serif;margin:0 0 7px}
+.muted{color:var(--muted);font-size:12px}
+.price{font-weight:bold;margin:12px 0}
+.card .btn{padding:9px 11px;font-size:12px}
+.card select{font-size:13px;max-width:100%}
+.spices{background:#f0e6d5;border-block:1px solid var(--line)}
+.cartbar{display:flex;gap:12px;align-items:center}
+.footer{background:var(--green2);color:#fff1d5;padding:28px 5%;line-height:1.7}
+.modalback{display:none;position:fixed;inset:0;background:#0009;z-index:10;align-items:center;justify-content:center;padding:15px}
+.modalback.open{display:flex}
+.modal{background:var(--paper);border-radius:12px;padding:22px;width:min(560px,100%);max-height:90vh;overflow:auto}
+.modalhead{display:flex;justify-content:space-between;align-items:center;gap:10px}
+.modalhead h2{font:26px Georgia,serif;margin:0}
+.close{font-size:26px;border:0;background:none}
+.cartline{display:flex;justify-content:space-between;align-items:center;gap:8px;border-bottom:1px solid var(--line);padding:12px 0}
+.qty button{padding:3px 9px;margin:0 4px}
+.field{display:grid;gap:6px;margin:12px 0}
+.field label{font-size:12px;color:var(--muted)}
+.field input,.field textarea,.field select{padding:11px;border:1px solid var(--line);border-radius:5px;background:white;color:#222;width:100%}
+.notice{font-size:12px;color:var(--muted);line-height:1.5}
+.total{font-weight:bold;font-size:18px;margin:15px 0}
+.summaryline{display:flex;justify-content:space-between;gap:16px;margin:7px 0}
+.grandtotal{border-top:1px solid var(--line);padding-top:10px;font-size:19px;font-weight:bold}
+.hp{position:absolute;left:-10000px;width:1px;height:1px;overflow:hidden}
+
+/* CUSTOMER ORDER TRACKING */
+.track-section{
+  max-width:650px;
+  margin:35px auto;
+  padding:25px;
+  background:var(--paper);
+  border:1px solid var(--line);
+  border-radius:12px;
+}
+.track-section h2{
+  font:30px Georgia,serif;
+  margin:0 0 10px;
+  color:var(--green);
+}
+.track-section p{
+  color:var(--muted);
+  font-size:13px;
+  line-height:1.6;
+}
+.track-section input{
+  display:block;
+  width:100%;
+  padding:13px;
+  margin:12px 0;
+  border:1px solid var(--line);
+  border-radius:6px;
+  background:white;
+}
+.track-section button{
+  width:100%;
+  padding:13px;
+  border:0;
+  border-radius:6px;
+  background:var(--green);
+  color:white;
+  font-weight:bold;
+}
+.track-result{
+  display:none;
+  margin-top:18px;
+  padding:15px;
+  border-radius:8px;
+  line-height:1.7;
+  overflow-wrap:anywhere;
+}
+.track-result.success{
+  display:block;
+  background:#edf6ed;
+  color:#164b38;
+}
+.track-result.error{
+  display:block;
+  background:#fff0ed;
+  color:#a32118;
+}
+
+@media(max-width:760px){
+  .hero{grid-template-columns:1fr;padding-top:32px}
+  .hero-art{min-height:190px;font-size:95px}
+  .grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .nav{padding:14px 4%}
+  .section{padding:30px 4%}
+}
+@media(max-width:420px){
+  .grid{gap:8px}
+  .body{padding:10px}
+  .body h3{font-size:16px}
+  .art{height:105px;font-size:45px}
+  .btn{padding:10px 12px}
+  .track-section{margin:20px 4%;padding:17px}
+}
+</style>
+</head>
+
+<body>
+
+<div class="top">
+  <span>Premium Dry Fruits · Quality You Can Trust</span>
+  <span>Retail + Wholesale · Bihar delivery enquiries</span>
+</div>
+
+<header class="nav">
+  <div>
+    <div class="brand">✦ Mewa Veda</div>
+    <div class="tag">DRY FRUITS & WHOLE SPICES</div>
+  </div>
+  <div class="cartbar">
+    <button class="btn alt" id="bulkBtn">Wholesale</button>
+    <button class="btn" id="cartBtn">Cart (<span id="count">0</span>)</button>
+  </div>
+</header>
+
+<section class="hero">
+  <div>
+    <div class="eyebrow">A little goodness, every day</div>
+    <h1>Nature’s finest.<br><span style="color:#efc77d">Chosen for you.</span></h1>
+    <p>Badam, kaju, pista, kishmish, anjeer aur khade masale — Mewa Veda par apne favourites dekhein.</p>
+    <button class="btn" onclick="document.getElementById('shop').scrollIntoView({behavior:'smooth'})">Shop products ↓</button>
+  </div>
+  <div class="hero-art">🥜</div>
+</section>
+
+<section class="section" id="shop">
+  <div class="heading">
+    <div class="eyebrow" style="color:var(--gold)">Explore the collection</div>
+    <h2>Dry Fruits & More</h2>
+    <p>Select your preferred pack size and check the price.</p>
+  </div>
+  <div class="grid" id="products"></div>
+</section>
+
+<section class="section spices">
+  <div class="heading">
+    <div class="eyebrow" style="color:var(--gold)">Kitchen essentials</div>
+    <h2>Whole Spices / Khade Masale</h2>
+    <p>Choose your preferred pack size.</p>
+  </div>
+  <div class="grid" id="spices"></div>
+</section>
+
+<section class="section">
+  <div class="heading">
+    <h2>Ordering information</h2>
+    <p>Orders are sent for confirmation.</p>
+  </div>
+  <p>Delivery charge: ₹0. Cash on Delivery only. Online payment is not connected yet. An order is confirmed only when the website shows a confirmation and order ID. Never enter a UPI PIN or card details into this website.</p>
+</section>
+
+<!-- CUSTOMER ORDER TRACKING -->
+<section class="track-section" id="track-order">
+  <h2>Track Your Order</h2>
+  <p>
+    Apna Order ID aur order karte waqt diya hua mobile number
+    enter karke apne order ka current status check karein.
+  </p>
+
+  <form id="mv-track-form">
+    <input
+      type="text"
+      id="mv-order-id"
+      placeholder="Enter Order ID (e.g. MV-...)"
+      maxlength="60"
+      required
+    >
+
+    <input
+      type="tel"
+      id="mv-order-phone"
+      placeholder="Enter 10-digit mobile number"
+      maxlength="10"
+      inputmode="numeric"
+      pattern="[0-9]{10}"
+      required
+    >
+
+    <button type="submit" id="mv-track-button">
+      Track Order
+    </button>
+  </form>
+
+  <div
+    id="mv-track-result"
+    class="track-result"
+    role="status"
+    aria-live="polite">
+  </div>
+</section>
+
+<footer class="footer">
+  <strong>Mewa Veda</strong><br>
+  Dry Fruits & Whole Spices<br>
+  Wholesale enquiries: +91 87090 11592
+</footer>
+
+<div class="modalback" id="back">
+  <div class="modal">
+    <div class="modalhead">
+      <h2 id="modalTitle">Your Cart</h2>
+      <button class="close" id="close">×</button>
+    </div>
+    <div id="content"></div>
+  </div>
+</div>
+
+<script>
+(function(){
+'use strict';
+
+const FREE_DELIVERY_MINIMUM = 0;
+const DELIVERY_CHARGE = 0;
+
+// =====================================
+// ALL PRODUCTS
+// =====================================
+
+const products = [
+  // Existing products
+  {id:'badam',name:'Badam / Almonds',emoji:'🌰',price:275,unit:'250 g'},
+  {id:'kaju',name:'Kaju / Cashews',emoji:'🥜',price:265,unit:'250 g'},
+  {id:'pista',name:'Pista / Pistachios',emoji:'🟢',price:465,unit:'250 g'},
+  {id:'kishmish',name:'Kishmish / Raisins',emoji:'🍇',price:125,unit:'250 g'},
+  {id:'akhrot',name:'Akhrot / Walnuts',emoji:'🤎',price:300,unit:'250 g'},
+  {id:'khajoor',name:'Khajoor / Dates',emoji:'🟤',price:280,unit:'500 g'},
+  {id:'mix',name:'Mix Dry Fruits',emoji:'🎁',price:270,unit:'250 g'},
+  {id:'anjeer',name:'Anjeer / Dried Figs',emoji:'🟣',price:250,unit:'250 g'},
+
+  // New products
+  {
+    name:'Chhuhara',emoji:'🟤',
+    variants:[
+      {id:'chhuhara-500g',unit:'500 g',price:200},
+      {id:'chhuhara-1kg',unit:'1 kg',price:399}
+    ]
+  },
+  {
+    name:'Makhana',emoji:'⚪',
+    variants:[
+      {id:'makhana-100g',unit:'100 g',price:150},
+      {id:'makhana-250g',unit:'250 g',price:370},
+      {id:'makhana-500g',unit:'500 g',price:700}
+    ]
+  },
+  {
+    name:'Nariyal Powder',emoji:'🥥',
+    variants:[
+      {id:'nariyal-powder-250g',unit:'250 g',price:99},
+      {id:'nariyal-powder-500g',unit:'500 g',price:199}
+    ]
+  },
+  {
+    name:'Sabudana',emoji:'⚪',
+    variants:[
+      {id:'sabudana-200g',unit:'200 g',price:35},
+      {id:'sabudana-500g',unit:'500 g',price:70}
+    ]
+  },
+  {
+    name:'Mungfali',emoji:'🥜',
+    variants:[
+      {id:'mungfali-100g',unit:'100 g',price:20},
+      {id:'mungfali-250g',unit:'250 g',price:50},
+      {id:'mungfali-500g',unit:'500 g',price:100},
+      {id:'mungfali-1kg',unit:'1 kg',price:190}
+    ]
+  }
+];
+
+// =====================================
+// WHOLE SPICES
+// =====================================
+
+const spices = [
+  // Updated pack prices
+  {
+    name:'Cumin Seeds / Jeera',emoji:'🌿',
+    variants:[
+      {id:'spice-cumin-seeds-jeera-500g',unit:'500 g',price:199},
+      {id:'spice-cumin-seeds-jeera-1kg',unit:'1 kg',price:398}
+    ]
+  },
+  {
+    name:'Golki / Black Pepper / Kali Mirch',emoji:'⚫',
+    variants:[
+      {id:'spice-black-pepper-kali-mirch-500g',unit:'500 g',price:480},
+      {id:'spice-black-pepper-kali-mirch-1kg',unit:'1 kg',price:960}
+    ]
+  },
+  {
+    name:'Green Cardamom / Chhoti Elaichi',emoji:'🟢',
+    variants:[
+      {id:'spice-green-cardamom-chhoti-elaichi-100g',unit:'100 g',price:500},
+      {id:'spice-green-cardamom-chhoti-elaichi-250g',unit:'250 g',price:1250},
+      {id:'spice-green-cardamom-chhoti-elaichi-500g',unit:'500 g',price:2500},
+      {id:'spice-green-cardamom-chhoti-elaichi-1kg',unit:'1 kg',price:4900}
+    ]
+  },
+  {
+    name:'Cinnamon / Dalchini',emoji:'🪵',
+    variants:[
+      {id:'spice-cinnamon-dalchini-250g',unit:'250 g',price:149},
+      {id:'spice-cinnamon-dalchini-500g',unit:'500 g',price:299},
+      {id:'spice-cinnamon-dalchini-1kg',unit:'1 kg',price:598}
+    ]
+  },
+  {
+    name:'Cloves / Laung',emoji:'🍂',
+    variants:[
+      {id:'spice-cloves-laung-250g',unit:'250 g',price:300},
+      {id:'spice-cloves-laung-500g',unit:'500 g',price:600},
+      {id:'spice-cloves-laung-1kg',unit:'1 kg',price:1200}
+    ]
+  },
+  // Existing spices whose prices were not changed
+  {name:'Fennel Seeds / Saunf',emoji:'🌱',price:250,unit:'1 kg'},
+  {
+    name:'Black Cardamom / Badi Elaichi',emoji:'🌰',
+    variants:[
+      {id:'spice-black-cardamom-badi-elaichi-100g',unit:'100 g',price:260},
+      {id:'spice-black-cardamom-badi-elaichi-250g',unit:'250 g',price:650},
+      {id:'spice-black-cardamom-badi-elaichi-500g',unit:'500 g',price:1300},
+      {id:'spice-black-cardamom-badi-elaichi-1kg',unit:'1 kg',price:2600}
+    ]
+  },
+
+  // New khada masala
+  {
+    name:'Ajwain',emoji:'🌿',
+    variants:[
+      {id:'ajwain-250g',unit:'250 g',price:99},
+      {id:'ajwain-500g',unit:'500 g',price:199},
+      {id:'ajwain-1kg',unit:'1 kg',price:399}
+    ]
+  },
+  {
+    name:'Methi',emoji:'🌱',
+    variants:[
+      {id:'methi-250g',unit:'250 g',price:49},
+      {id:'methi-500g',unit:'500 g',price:99},
+      {id:'methi-1kg',unit:'1 kg',price:199}
+    ]
+  },
+  {
+    name:'Sarso',emoji:'🟡',
+    variants:[
+      {id:'sarso-250g',unit:'250 g',price:59},
+      {id:'sarso-500g',unit:'500 g',price:118},
+      {id:'sarso-1kg',unit:'1 kg',price:236}
+    ]
+  },
+  {
+    name:'Kala Sarso',emoji:'⚫',
+    variants:[
+      {id:'kala-sarso-250g',unit:'250 g',price:59},
+      {id:'kala-sarso-500g',unit:'500 g',price:118},
+      {id:'kala-sarso-1kg',unit:'1 kg',price:236}
+    ]
+  },
+  {
+    name:'Khadi Mirch',emoji:'🌶️',
+    variants:[
+      {id:'khadi-mirch-250g',unit:'250 g',price:100},
+      {id:'khadi-mirch-500g',unit:'500 g',price:199}
+    ]
+  },
+  {
+    name:'Khadi Haldi',emoji:'🟡',
+    variants:[
+      {id:'khadi-haldi-250g',unit:'250 g',price:87},
+      {id:'khadi-haldi-500g',unit:'500 g',price:175}
+    ]
+  }
+];
+
+let cart = [];
+let sendingOrder = false;
+
+const money = n => '₹' + Number(n).toLocaleString('en-IN');
+const $ = id => document.getElementById(id);
+
+// =====================================
+// CART TOTALS
+// =====================================
+
+function getTotals(){
+  const subtotal = cart.reduce((n,p)=>n+p.price*p.qty,0);
+  const deliveryCharge =
+    subtotal===0 || subtotal>=FREE_DELIVERY_MINIMUM
+      ? 0
+      : DELIVERY_CHARGE;
+
+  return {
+    subtotal,
+    deliveryCharge,
+    total:subtotal+deliveryCharge
+  };
+}
+
+function totalsHtml(t){
+  return `
+    <div class="summaryline">
+      <span>Subtotal</span>
+      <strong>${money(t.subtotal)}</strong>
+    </div>
+    <div class="summaryline">
+      <span>Delivery charge</span>
+      <strong>${t.deliveryCharge===0?'FREE':money(t.deliveryCharge)}</strong>
+    </div>
+    <div class="summaryline grandtotal">
+      <span>Final total</span>
+      <strong>${money(t.total)}</strong>
+    </div>
+    <p class="notice">
+      Delivery charge ₹0 hai. Aapka order total mein koi extra delivery fee nahi jodi jayegi.
+    </p>`;
+}
+
+function openInfo(title,html){
+  $('modalTitle').textContent=title;
+  $('content').innerHTML=html;
+  $('back').classList.add('open');
+}
+
+function updateCount(){
+  $('count').textContent=cart.reduce((n,p)=>n+p.qty,0);
+}
+
+// =====================================
+// DRY FRUITS RENDERING
+// =====================================
+
+function renderProducts(){
+
+  $('products').innerHTML=products.map((p,i)=>{
+
+    // Products with multiple pack sizes
+    if(p.variants){
+      return `
+        <article class="card">
+          <div class="art">${p.emoji}</div>
+          <div class="body">
+            <h3>${p.name}</h3>
+            <div class="muted">Select pack size</div>
+
+            <select
+              data-product-size="${i}"
+              style="width:100%;padding:9px;margin-top:8px;border:1px solid var(--line);border-radius:5px">
+
+              ${p.variants.map((v,j)=>`
+                <option value="${j}">
+                  ${v.unit} - ${money(v.price)}
+                </option>
+              `).join('')}
+
+            </select>
+
+            <div class="price" id="product-price-${i}">
+              ${money(p.variants[0].price)}
+            </div>
+
+            <button class="btn" data-variant-product="${i}">
+              Add to cart
+            </button>
+          </div>
+        </article>`;
+    }
+
+    // Existing products
+    return `
+      <article class="card">
+        <div class="art">${p.emoji}</div>
+        <div class="body">
+          <h3>${p.name}</h3>
+          <div class="muted">${p.unit}</div>
+          <div class="price">
+            ${p.price===null?'Price on request':money(p.price)}
+          </div>
+          <button class="btn" data-product="${p.id}">
+            ${p.price===null?'Ask price':'Add to cart'}
+          </button>
+        </div>
+      </article>`;
+  }).join('');
+
+  // Existing fixed-price products
+  document.querySelectorAll('[data-product]').forEach(b=>{
+    b.addEventListener('click',()=>{
+      const p=products.find(x=>x.id===b.dataset.product);
+
+      if(p.price===null){
+        openInfo(
+          'Price on request',
+          `<p>${p.name} ka current rate business se confirm karein.</p>
+           <p>Phone: +91 87090 11592</p>`
+        );
+        return;
+      }
+
+      const existing=cart.find(x=>x.id===p.id);
+
+      if(existing)existing.qty++;
+      else cart.push({...p,qty:1});
+
+      updateCount();
+      b.textContent='Added ✓';
+
+      setTimeout(()=>b.textContent='Add to cart',900);
+    });
+  });
+
+  // Update displayed price when pack size changes
+  document.querySelectorAll('[data-product-size]').forEach(select=>{
+    select.addEventListener('change',()=>{
+      const i=Number(select.dataset.productSize);
+      const variant=products[i].variants[Number(select.value)];
+
+      $('product-price-'+i).textContent=money(variant.price);
+    });
+  });
+
+  // Add selected pack size to cart
+  document.querySelectorAll('[data-variant-product]').forEach(b=>{
+    b.addEventListener('click',()=>{
+      const i=Number(b.dataset.variantProduct);
+      const p=products[i];
+
+      const select=document.querySelector(
+        `[data-product-size="${i}"]`
+      );
+
+      const variant=p.variants[Number(select.value)];
+
+      const item={
+        id:variant.id,
+        name:p.name+' ('+variant.unit+')',
+        price:variant.price,
+        unit:variant.unit,
+        emoji:p.emoji
+      };
+
+      const existing=cart.find(x=>x.id===item.id);
+
+      if(existing)existing.qty++;
+      else cart.push({...item,qty:1});
+
+      updateCount();
+      b.textContent='Added ✓';
+
+      setTimeout(()=>b.textContent='Add to cart',900);
+    });
+  });
+}
+
+// =====================================
+// WHOLE SPICES RENDERING
+// =====================================
+
+function renderSpices(){
+
+  $('spices').innerHTML=spices.map((s,i)=>{
+
+    // New spices with multiple pack sizes
+    if(s.variants){
+      return `
+        <article class="card">
+          <div class="art">${s.emoji}</div>
+          <div class="body">
+            <h3>${s.name}</h3>
+            <div class="muted">Select pack size</div>
+
+            <select
+              data-spice-size="${i}"
+              style="width:100%;padding:9px;margin-top:8px;border:1px solid var(--line);border-radius:5px">
+
+              ${s.variants.map((v,j)=>`
+                <option value="${j}">
+                  ${v.unit} - ${money(v.price)}
+                </option>
+              `).join('')}
+
+            </select>
+
+            <div class="price" id="spice-price-${i}">
+              ${money(s.variants[0].price)}
+            </div>
+
+            <button class="btn" data-variant-spice="${i}">
+              Add to cart
+            </button>
+          </div>
+        </article>`;
+    }
+
+    // Existing spices sold per kg
+    const id='spice-'+s.name.toLowerCase().replace(/[^a-z0-9]+/g,'-');
+
+    return `
+      <article class="card">
+        <div class="art">${s.emoji}</div>
+        <div class="body">
+          <h3>${s.name}</h3>
+          <div class="muted">Per kg</div>
+          <div class="price">${money(s.price)} / kg</div>
+
+          <button
+            class="btn"
+            data-spice="${id}"
+            data-name="${s.name}"
+            data-price="${s.price}">
+            Add to cart
+          </button>
+        </div>
+      </article>`;
+  }).join('');
+
+  // Existing per-kg spices
+  document.querySelectorAll('[data-spice]').forEach(b=>{
+    b.addEventListener('click',()=>{
+      const id=b.dataset.spice;
+      const name=b.dataset.name;
+      const price=Number(b.dataset.price);
+
+      const existing=cart.find(x=>x.id===id);
+
+      if(existing)existing.qty++;
+      else cart.push({
+        id,
+        name,
+        price,
+        unit:'1 kg',
+        emoji:'🌿',
+        qty:1
+      });
+
+      updateCount();
+      b.textContent='Added ✓';
+
+      setTimeout(()=>b.textContent='Add to cart',900);
+    });
+  });
+
+  // Update price when new spice pack size changes
+  document.querySelectorAll('[data-spice-size]').forEach(select=>{
+    select.addEventListener('change',()=>{
+      const i=Number(select.dataset.spiceSize);
+      const variant=spices[i].variants[Number(select.value)];
+
+      $('spice-price-'+i).textContent=money(variant.price);
+    });
+  });
+
+  // Add selected new spice pack to cart
+  document.querySelectorAll('[data-variant-spice]').forEach(b=>{
+    b.addEventListener('click',()=>{
+      const i=Number(b.dataset.variantSpice);
+      const s=spices[i];
+
+      const select=document.querySelector(
+        `[data-spice-size="${i}"]`
+      );
+
+      const variant=s.variants[Number(select.value)];
+
+      const item={
+        id:variant.id,
+        name:s.name+' ('+variant.unit+')',
+        price:variant.price,
+        unit:variant.unit,
+        emoji:s.emoji
+      };
+
+      const existing=cart.find(x=>x.id===item.id);
+
+      if(existing)existing.qty++;
+      else cart.push({...item,qty:1});
+
+      updateCount();
+      b.textContent='Added ✓';
+
+      setTimeout(()=>b.textContent='Add to cart',900);
+    });
+  });
+}
+
+// =====================================
+// CART
+// =====================================
+
+function openCart(){
+
+  $('modalTitle').textContent='Your Cart';
+
+  if(!cart.length){
+    $('content').innerHTML=
+      '<p>Your cart is empty. Dry fruits add karke try karo.</p>';
+  }else{
+
+    $('content').innerHTML=cart.map(p=>`
+      <div class="cartline">
+        <div>
+          <strong>${p.name}</strong>
+          <div class="muted">
+            ${money(p.price)} / ${p.unit}
+          </div>
+
+          <div class="qty">
+            <button data-minus="${p.id}">−</button>
+            ${p.qty}
+            <button data-plus="${p.id}">+</button>
+          </div>
+        </div>
+
+        <strong>
+          ${money(p.price*p.qty)}
+          <button class="btn alt" data-remove="${p.id}">
+            Remove
+          </button>
+        </strong>
+      </div>
+    `).join('')+
+    totalsHtml(getTotals())+
+    '<button class="btn" id="checkout">Continue to checkout</button>';
+
+    document.querySelectorAll('[data-minus]').forEach(b=>{
+      b.onclick=()=>changeQty(b.dataset.minus,-1);
+    });
+
+    document.querySelectorAll('[data-plus]').forEach(b=>{
+      b.onclick=()=>changeQty(b.dataset.plus,1);
+    });
+
+    document.querySelectorAll('[data-remove]').forEach(b=>{
+      b.onclick=()=>{
+        cart=cart.filter(p=>p.id!==b.dataset.remove);
+        updateCount();
+        openCart();
+      };
+    });
+
+    $('checkout').onclick=checkout;
+  }
+
+  $('back').classList.add('open');
+}
+
+function changeQty(id,d){
+  const p=cart.find(x=>x.id===id);
+
+  if(p){
+    p.qty+=d;
+
+    if(p.qty<=0){
+      cart=cart.filter(x=>x.id!==id);
+    }
+  }
+
+  updateCount();
+  openCart();
+}
+
+// =====================================
+// CHECKOUT
+// =====================================
+
+function checkout(){
+
+  if(!cart.length){
+    openCart();
+    return;
+  }
+
+  $('modalTitle').textContent='Checkout';
+
+  $('content').innerHTML=`
+    <p class="notice">
+      Cash on Delivery only. OTP ki zarurat nahi hai.
+      Sabhi orders par delivery charge ₹0 hai.
+    </p>
+
+    <form id="checkoutForm" novalidate>
+
+      <div class="field">
+        <label>Full name</label>
+        <input name="name" required maxlength="100" autocomplete="name">
+      </div>
+
+      <div class="field">
+        <label>Indian mobile number</label>
+        <input
+          name="phone"
+          type="tel"
+          inputmode="numeric"
+          pattern="[6-9][0-9]{9}"
+          minlength="10"
+          maxlength="10"
+          required
+          placeholder="10 digit mobile number"
+          autocomplete="tel-national">
+      </div>
+
+      <!-- OPTIONAL CUSTOMER EMAIL -->
+      <div class="field">
+        <label>Email address (optional)</label>
+        <input
+          name="email"
+          type="email"
+          maxlength="254"
+          placeholder="you@example.com"
+          autocomplete="email">
+      </div>
+
+      <!-- EMAIL NOTIFICATION CONSENT -->
+      <div class="field" style="display:flex;align-items:flex-start;gap:9px">
+        <input
+          name="emailNotifications"
+          type="checkbox"
+          value="yes"
+          style="width:auto;margin-top:2px;flex-shrink:0">
+
+        <label style="font-size:13px;color:var(--ink);line-height:1.5">
+          I agree to receive order status updates by email from Mewa Veda.
+        </label>
+      </div>
+
+      <p class="notice">
+        Email updates optional hain. Checkbox select karne par
+        Confirmed, Shipped aur Delivered status ke email updates mil sakte hain.
+      </p>
+
+      <div class="field">
+        <label>Full delivery address</label>
+        <textarea
+          name="address"
+          required
+          maxlength="500"
+          rows="3"
+          autocomplete="street-address"></textarea>
+      </div>
+
+      <div class="field">
+        <label>City / local delivery area</label>
+        <input
+          name="city"
+          required
+          maxlength="100"
+          autocomplete="address-level2">
+      </div>
+
+      <div class="field">
+        <label>PIN code</label>
+        <input
+          name="pin"
+          inputmode="numeric"
+          pattern="[0-9]{6}"
+          maxlength="6"
+          required
+          placeholder="6 digit PIN code"
+          autocomplete="postal-code">
+      </div>
+
+      <div class="field">
+        <label>Payment option</label>
+        <select name="payment" required>
+          <option value="COD">Cash on Delivery (COD)</option>
+        </select>
+      </div>
+
+      <div class="hp" aria-hidden="true">
+        <label>Website</label>
+        <input name="website" tabindex="-1" autocomplete="off">
+      </div>
+
+      <div id="checkoutTotals">
+        ${totalsHtml(getTotals())}
+      </div>
+
+      <button class="btn" type="submit" id="placeOrderBtn">
+        Place COD order
+      </button>
+
+      <p id="checkoutStatus" class="notice" role="status" aria-live="polite"></p>
+    </form>`;
+
+  const form=$('checkoutForm');
+  const placeBtn=$('placeOrderBtn');
+  const status=$('checkoutStatus');
+
+  form.addEventListener('submit',async event=>{
+
+    event.preventDefault();
+
+    if(sendingOrder)return;
+
+    if(!form.checkValidity()){
+      status.textContent=
+        'Please apna naam, mobile, address, city aur PIN sahi enter karein.';
+
+      const invalid=form.querySelector(':invalid');
+
+      if(invalid){
+        invalid.focus();
+        invalid.reportValidity();
+      }
+
+      return;
+    }
+
+    if(!cart.length){
+      status.textContent='Cart empty hai. Pehle product add karein.';
+      return;
+    }
+
+    const f=new FormData(form);
+
+    // EMAIL VALIDATION AND CONSENT
+    const email=String(f.get('email')||'').trim();
+    const emailNotifications=
+      f.get('emailNotifications')==='yes';
+
+    if(email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)){
+      status.textContent='Please valid email address enter karein.';
+      form.elements.email.focus();
+      return;
+    }
+
+    if(emailNotifications && !email){
+      status.textContent=
+        'Email notifications ke liye pehle apna email address enter karein.';
+      form.elements.email.focus();
+      return;
+    }
+
+    const orderTotals=getTotals();
+
+    const order={
+      customer:{
+        name:String(f.get('name')||'').trim(),
+        phone:String(f.get('phone')||'').trim(),
+        email:email,
+        emailNotifications:emailNotifications,
+        address:String(f.get('address')||'').trim(),
+        city:String(f.get('city')||'').trim(),
+        pin:String(f.get('pin')||'').trim()
+      },
+
+      paymentMethod:'COD',
+
+      items:cart.map(p=>({
+        id:String(p.id),
+        name:String(p.name),
+        qty:Number(p.qty)
+      })),
+
+      subtotal:orderTotals.subtotal,
+      deliveryCharge:orderTotals.deliveryCharge,
+      total:orderTotals.total,
+      currency:'INR',
+      website:String(f.get('website')||'')
+    };
+
+    sendingOrder=true;
+    placeBtn.disabled=true;
+    placeBtn.textContent='Sending order…';
+
+    status.textContent=
+      'Order request bheji ja rahi hai. Please wait.';
+
+    try{
+
+      const response=await fetch('/api/place-order',{
+        method:'POST',
+        headers:{
+          'Content-Type':'application/json'
+        },
+        body:JSON.stringify(order)
+      });
+
+      let data;
+
+      try{
+        data=await response.json();
+      }catch{
+        throw new Error(
+          'Order service ka response samajh nahi aaya. Please business se contact karein.'
+        );
+      }
+
+      if(!response.ok||data.ok!==true){
+        throw new Error(
+          data.message||'Order confirm nahi hua. Please dobara try karein.'
+        );
+      }
+
+      const orderId=String(
+        data.orderId||'Confirmation pending'
+      );
+
+      cart=[];
+      updateCount();
+
+      $('content').innerHTML=`
+        <h3>Order request received!</h3>
+
+        <p>
+          Your order ID:
+          <strong id="confirmedOrderId"></strong>
+        </p>
+
+        <p class="notice">
+          Payment: Cash on Delivery — payment abhi pending hai.
+          Mewa Veda team delivery availability aur order confirm
+          karne ke liye aapse contact karegi.
+        </p>
+
+        <button class="btn alt" id="closeAfterRequest" type="button">
+          Close
+        </button>`;
+
+      $('confirmedOrderId').textContent=orderId;
+
+      $('closeAfterRequest').onclick=()=>{
+        $('back').classList.remove('open');
+      };
+
+    }catch(error){
+
+      status.textContent=
+        error.message||'Order send nahi hua. Please dobara try karein.';
+
+      sendingOrder=false;
+      placeBtn.disabled=false;
+      placeBtn.textContent='Place COD order';
+    }
+  });
+
+  $('back').classList.add('open');
+}
+
+// =====================================
+// CUSTOMER ORDER TRACKING
+// =====================================
+
+const trackForm=$('mv-track-form');
+const trackButton=$('mv-track-button');
+const trackResult=$('mv-track-result');
+
+trackForm.addEventListener('submit',async function(event){
+
+  event.preventDefault();
+
+  const orderId=$('mv-order-id').value.trim();
+  const phone=$('mv-order-phone').value.replace(/\D/g,'');
+
+  trackResult.style.display='block';
+  trackResult.className='track-result';
+  trackResult.textContent='';
+
+  if(
+    orderId.length<5 ||
+    orderId.length>60 ||
+    phone.length!==10
+  ){
+    trackResult.className='track-result error';
+    trackResult.textContent=
+      'Please valid Order ID aur 10-digit mobile number enter karein.';
+    return;
+  }
+
+  trackButton.disabled=true;
+  trackButton.textContent='Checking...';
+
+  try{
+
+    const response=await fetch('/.netlify/functions/track-order',{
+      method:'POST',
+      headers:{
+        'Content-Type':'application/json'
+      },
+      body:JSON.stringify({
+        orderId:orderId,
+        phone:phone
+      })
+    });
+
+    const data=await response.json();
+
+    if(!response.ok||!data.ok){
+      throw new Error(
+        data.message||'Order nahi mila. Details check karein.'
+      );
+    }
+
+    trackResult.className='track-result success';
+
+    const heading=document.createElement('strong');
+    heading.textContent='Order Status';
+
+    const idLine=document.createElement('div');
+    idLine.textContent='Order ID: '+data.orderId;
+
+    const statusLine=document.createElement('div');
+    statusLine.textContent='Current Status: '+data.status;
+
+    trackResult.replaceChildren(
+      heading,
+      idLine,
+      statusLine
+    );
+
+  }catch(error){
+
+    trackResult.className='track-result error';
+
+    trackResult.textContent=
+      error.message||'Order track nahi ho paya. Please dobara try karein.';
+
+  }finally{
+
+    trackButton.disabled=false;
+    trackButton.textContent='Track Order';
+  }
+});
+
+// =====================================
+// WEBSITE BUTTONS
+// =====================================
+
+$('cartBtn').onclick=openCart;
+
+$('close').onclick=()=>{
+  $('back').classList.remove('open');
+};
+
+$('back').onclick=e=>{
+  if(e.target===$('back')){
+    $('back').classList.remove('open');
+  }
+};
+
+$('bulkBtn').onclick=()=>openInfo(
+  'Wholesale enquiry',
+  '<p>Wholesale rates and minimum quantity business se confirm karein.</p><p>Phone: +91 87090 11592</p>'
+);
+
+// =====================================
+// START WEBSITE
+// =====================================
+
+renderProducts();
+renderSpices();
+
+})();
+</script>
+
+</body>
+</html>
