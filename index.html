@@ -1005,7 +1005,7 @@ function checkout(){
 
     try{
 
-      const response=await fetch('/.netlify/functions/place-order',{
+      const response=await fetch('/api/place-order',{
         method:'POST',
         headers:{
           'Content-Type':'application/json'
