@@ -7,15 +7,9 @@ const PRODUCTS = {
   kishmish: { name: "Kishmish / Raisins (250g)", price: 125 },
   akhrot: { name: "Akhrot / Walnuts (250g)", price: 300 },
   anjeer: { name: "Anjeer / Dried Figs (250g)", price: 250 },
-  khajoor: {
-  name: "Khajoor / Dates (500g)",
-  price: 280
-},
+  khajoor: { name: "Khajoor / Dates (500g)", price: 280 },
+  mix: { name: "Mix Dry Fruits (250g)", price: 270 },
 
-mix: {
-  name: "Mix Dry Fruits (250g)",
-  price: 270
-},
   // Other Products
   "chhuhara-500g": { name: "Chhuhara (500g)", price: 200 },
   "chhuhara-1kg": { name: "Chhuhara (1kg)", price: 399 },
@@ -103,7 +97,7 @@ mix: {
     price: 250
   },
 
-  // Badi Elaichi - Updated Prices
+  // Badi Elaichi
   "spice-black-cardamom-badi-elaichi-100g": {
     name: "Badi Elaichi (100g)",
     price: 260
@@ -149,50 +143,68 @@ mix: {
 const FREE_DELIVERY_MINIMUM = 0;
 const DELIVERY_CHARGE = 0;
 
-exports.handler = async (event) => {
-  const headers = {
-    "Content-Type": "application/json; charset=utf-8",
-    "Cache-Control": "no-store"
-  };
-
-  const reply = (statusCode, data) => ({
-    statusCode,
-    headers,
-    body: JSON.stringify(data)
+function jsonResponse(data, status = 200) {
+  return new Response(JSON.stringify(data), {
+    status,
+    headers: {
+      "Content-Type": "application/json; charset=utf-8",
+      "Cache-Control": "no-store",
+      "Access-Control-Allow-Origin": "*",
+      "Access-Control-Allow-Methods": "POST, OPTIONS",
+      "Access-Control-Allow-Headers": "Content-Type"
+    }
   });
+}
 
-  if (event.httpMethod !== "POST") {
-    return reply(405, {
-      ok: false,
-      message: "Only POST requests are allowed."
-    });
-  }
+// Handle browser preflight requests
+export async function onRequestOptions() {
+  return new Response(null, {
+    status: 204,
+    headers: {
+      "Access-Control-Allow-Origin": "*",
+      "Access-Control-Allow-Methods": "POST, OPTIONS",
+      "Access-Control-Allow-Headers": "Content-Type",
+      "Access-Control-Max-Age": "86400"
+    }
+  });
+}
 
+// Handle COD orders
+export async function onRequestPost({ request, env }) {
   try {
-    if (!event.body || event.body.length > 20000) {
-      return reply(400, {
+    const body = await request.text();
+
+    if (!body || body.length > 20000) {
+      return jsonResponse({
         ok: false,
         message: "Order data is missing or too large."
-      });
+      }, 400);
     }
 
     let order;
 
     try {
-      order = JSON.parse(event.body);
+      order = JSON.parse(body);
     } catch {
-      return reply(400, {
+      return jsonResponse({
         ok: false,
         message: "Invalid order data."
-      });
+      }, 400);
+    }
+
+    if (!order || typeof order !== "object" || Array.isArray(order)) {
+      return jsonResponse({
+        ok: false,
+        message: "Invalid order request."
+      }, 400);
     }
 
     // Basic bot protection
     if (String(order.website || "").trim() !== "") {
-      return reply(400, {
+      return jsonResponse({
         ok: false,
         message: "Invalid order request."
-      });
+      }, 400);
     }
 
     const customer = order.customer || {};
@@ -204,63 +216,62 @@ exports.handler = async (event) => {
     const pin = String(customer.pin || "").trim();
 
     const email = String(customer.email || "").trim();
-    const emailNotifications =
-      customer.emailNotifications === true;
+    const emailNotifications = customer.emailNotifications === true;
 
     if (email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
-      return reply(400, {
+      return jsonResponse({
         ok: false,
         message: "Please enter a valid email address."
-      });
+      }, 400);
     }
 
     if (emailNotifications && !email) {
-      return reply(400, {
+      return jsonResponse({
         ok: false,
         message: "Enter your email address to receive order updates."
-      });
+      }, 400);
     }
 
     if (name.length < 2 || name.length > 100) {
-      return reply(400, {
+      return jsonResponse({
         ok: false,
         message: "Please enter a valid customer name."
-      });
+      }, 400);
     }
 
     if (!/^[6-9]\d{9}$/.test(phone)) {
-      return reply(400, {
+      return jsonResponse({
         ok: false,
         message: "Enter a valid 10-digit Indian mobile number."
-      });
+      }, 400);
     }
 
     if (address.length < 8 || address.length > 500) {
-      return reply(400, {
+      return jsonResponse({
         ok: false,
         message: "Please enter a complete delivery address."
-      });
+      }, 400);
     }
 
     if (city.length < 2 || city.length > 100) {
-      return reply(400, {
+      return jsonResponse({
         ok: false,
         message: "Please enter a valid city or delivery area."
-      });
+      }, 400);
     }
 
     if (!/^\d{6}$/.test(pin)) {
-      return reply(400, {
+      return jsonResponse({
         ok: false,
         message: "Enter a valid 6-digit PIN code."
-      });
+      }, 400);
     }
 
     if (order.paymentMethod !== "COD") {
-      return reply(400, {
+      return jsonResponse({
         ok: false,
         message: "Only Cash on Delivery is available."
-      });
+      }, 400);
     }
 
     if (
@@ -268,13 +279,13 @@ exports.handler = async (event) => {
       order.items.length < 1 ||
       order.items.length > 20
     ) {
-      return reply(400, {
+      return jsonResponse({
         ok: false,
         message: "Your cart is empty or contains too many items."
-      });
+      }, 400);
     }
 
-    // Server-side price verification
+    // Verify product IDs, quantities and prices on the server
     const verifiedItems = [];
     let subtotal = 0;
 
@@ -284,18 +295,17 @@ exports.handler = async (event) => {
       const qty = Number(item.qty);
 
       if (!product) {
-        return reply(400, {
+        return jsonResponse({
           ok: false,
-          message:
-            "One of the selected products is unavailable. Please refresh the website."
-        });
+          message: "One of the selected products is unavailable. Please refresh the website."
+        }, 400);
       }
 
       if (!Number.isInteger(qty) || qty < 1 || qty > 20) {
-        return reply(400, {
+        return jsonResponse({
           ok: false,
           message: "Invalid product quantity."
-        });
+        }, 400);
       }
 
       const lineTotal = product.price * qty;
@@ -311,9 +321,7 @@ exports.handler = async (event) => {
     }
 
     const deliveryCharge =
-      subtotal >= FREE_DELIVERY_MINIMUM
-        ? 0
-        : DELIVERY_CHARGE;
+      subtotal >= FREE_DELIVERY_MINIMUM ? 0 : DELIVERY_CHARGE;
 
     const total = subtotal + deliveryCharge;
 
@@ -335,26 +343,27 @@ exports.handler = async (event) => {
       currency: "INR"
     };
 
-    // Google Apps Script URL from Netlify environment variable
-    const appsScriptUrl = process.env.ORDER_API_URL;
+    // Cloudflare Pages environment variable
+    const appsScriptUrl = env.ORDER_API_URL;
 
     if (
       !appsScriptUrl ||
       !/^https:\/\/script\.google\.com\/macros\/s\/.+\/exec$/.test(appsScriptUrl)
     ) {
-      return reply(500, {
+      return jsonResponse({
         ok: false,
-        message:
-          "Order service is not configured. Please contact Mewa Veda."
-      });
+        message: "Order service is not configured. Please contact Mewa Veda."
+      }, 500);
     }
 
+    // Send verified order to Google Apps Script
     const upstream = await fetch(appsScriptUrl, {
       method: "POST",
       headers: {
         "Content-Type": "text/plain;charset=utf-8"
       },
-      body: JSON.stringify(verifiedOrder)
+      body: JSON.stringify(verifiedOrder),
+      redirect: "follow"
     });
 
     const responseText = await upstream.text();
@@ -364,34 +373,33 @@ exports.handler = async (event) => {
     try {
       data = JSON.parse(responseText);
     } catch {
-      return reply(502, {
+      console.error("Apps Script returned a non-JSON response.");
+
+      return jsonResponse({
         ok: false,
         message: "Order service returned an unreadable response."
-      });
+      }, 502);
     }
 
     if (!upstream.ok || data.ok !== true) {
-      return reply(502, {
+      return jsonResponse({
         ok: false,
-        message:
-          data.message || "Order could not be saved. Please try again."
-      });
+        message: data.message || "Order could not be saved. Please try again."
+      }, 502);
     }
 
-    return reply(200, {
+    return jsonResponse({
       ok: true,
       orderId: data.orderId || data.id || null,
       message: "Order request received."
-    });
+    }, 200);
 
   } catch (error) {
     console.error("Place order error:", error);
 
-    return reply(500, {
+    return jsonResponse({
       ok: false,
-      message:
-        "Order service encountered an error. Please try again later."
-    });
+      message: "Order service encountered an error. Please try again later."
+    }, 500);
   }
-};
-
+}
